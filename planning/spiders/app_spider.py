@@ -1,14 +1,21 @@
 import scrapy
-
+from scrapy.http import FormRequest
 
 class ApplicationSpider(scrapy.Spider):
     name = "app"
     start_urls = [
-        'http://public-access.lbhf.gov.uk/online-applications/applicationDetails.do?activeTab=summary&keyVal=OHTSSLBIIIT00',
+        'http://public-access.lbhf.gov.uk/online-applications/search.do?action=simple&searchType=Application',
     ]
-
     
-    def parse(self,response):            
+    def parse(self,response):
+        yield FormRequest.from_response(response, formdata = {"searchCriteria.simpleSearchString":"oxberry"}, callback=self.parseResultsPage)
+    
+    def parseResultsPage(self,response):
+        yield {
+            "test" : response.css("title").extract()
+        }
+        
+    def parsesummary(self,response):            
         table = response.xpath("/html/body/div/div/div[2]/div[3]/div[3]/table")
         yield {
             "address" : table.xpath("//tr[5]/td/text()").extract(),
