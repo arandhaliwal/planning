@@ -11,11 +11,11 @@ class ApplicationSpider(scrapy.Spider):
         yield FormRequest.from_response(response, formdata = {"searchCriteria.simpleSearchString":"oxberry"}, callback=self.parseResultsPage)
     
     def parseResultsPage(self,response):
-        yield {
-            "test" : response.css("title").extract()
-        }
+          for result in response.css("li.searchresult"):
+            summaryPage = response.urljoin(result.css("a::attr(href)")[0].extract())       
+            yield scrapy.Request(summaryPage, callback=self.parseSummaryPage)
         
-    def parsesummary(self,response):            
+    def parseSummaryPage(self,response):            
         table = response.xpath("/html/body/div/div/div[2]/div[3]/div[3]/table")
         yield {
             "address" : table.xpath("//tr[5]/td/text()").extract(),
@@ -25,9 +25,9 @@ class ApplicationSpider(scrapy.Spider):
             
         constraintspage = response.css("ul.tabs a::attr(href)")[5].extract()
         constraintspage = response.urljoin(constraintspage)
-        yield scrapy.Request(constraintspage, callback=self.parse_constraints)
+        yield scrapy.Request(constraintspage, callback=self.parseConstraintsPage)
         
-    def parse_constraints(self,response):
+    def parseConstraintsPage(self,response):
         table = response.xpath("/html/body/div/div/div[2]/div[3]/div[3]/table")
         yield {
             "constraints" : table.xpath("//tr/td[1]/text()").extract()
