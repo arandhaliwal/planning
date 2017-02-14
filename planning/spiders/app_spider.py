@@ -1,6 +1,12 @@
 import scrapy
 from scrapy.http import FormRequest
 
+class Case(scrapy.Item):
+    address = scrapy.Field()
+    proposal = scrapy.Field()
+    decision = scrapy.Field()
+    constraints = scrapy.Field()
+
 class ApplicationSpider(scrapy.Spider):
     name = "app"
     start_urls = [
@@ -15,21 +21,26 @@ class ApplicationSpider(scrapy.Spider):
             summaryPage = response.urljoin(result.css("a::attr(href)")[0].extract())       
             yield scrapy.Request(summaryPage, callback=self.parseSummaryPage)
         
-    def parseSummaryPage(self,response):            
+    def parseSummaryPage(self,response):
+        case = Case()    
+           
         table = response.xpath("/html/body/div/div/div[2]/div[3]/div[3]/table")
-        yield {
+        '''yield {
             "address" : table.xpath("//tr[5]/td/text()").extract(),
             "proposal": table.xpath("//tr[6]/td/text()").extract(),
             "decision": table.xpath("//tr[8]/td/text()").extract(),
-        }
-            
+        }'''
+        case['address'] = table.xpath("//tr[5]/td/text()").extract()
+        case['proposal'] = table.xpath("//tr[6]/td/text()").extract()
+        case['decision'] = table.xpath("//tr[8]/td/text()").extract()           
         constraintspage = response.css("ul.tabs a::attr(href)")[5].extract()
         constraintspage = response.urljoin(constraintspage)
-        yield scrapy.Request(constraintspage, callback=self.parseConstraintsPage)
+        request = scrapy.Request(constraintspage, callback=self.parseConstraintsPage)
+        request.meta['case'] = case
+        yield request
         
     def parseConstraintsPage(self,response):
-        table = response.xpath("/html/body/div/div/div[2]/div[3]/div[3]/table")
-        yield {
-            "constraints" : table.xpath("//tr/td[1]/text()").extract()
-        }
-        
+        case = response.meta['case']
+        table = response.xpath("/html/body/div/div/div[2]/div[3]/div[3]/table")        
+        case['constraints'] = table.xpath("//tr/td[1]/text()").extract()
+        yield case
