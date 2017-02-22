@@ -17,19 +17,18 @@ class ApplicationSpider(scrapy.Spider):
         yield FormRequest.from_response(response, formdata = {"searchCriteria.simpleSearchString":"oxberry"}, callback=self.parseResultsPage)
     
     def parseResultsPage(self,response):
-          for result in response.css("li.searchresult"):
+        for result in response.css("li.searchresult"):
             summaryPage = response.urljoin(result.css("a::attr(href)")[0].extract())       
             yield scrapy.Request(summaryPage, callback=self.parseSummaryPage)
-        
+        nextPage = response.css("a.next::attr(href)")[0].extract()
+        if nextPage.endswith('2'):
+            nextPage = response.urljoin(nextPage)
+            yield scrapy.Request(nextPage, callback = self.parseResultsPage)
+            
     def parseSummaryPage(self,response):
         case = Case()    
            
         table = response.xpath("/html/body/div/div/div[2]/div[3]/div[3]/table")
-        '''yield {
-            "address" : table.xpath("//tr[5]/td/text()").extract(),
-            "proposal": table.xpath("//tr[6]/td/text()").extract(),
-            "decision": table.xpath("//tr[8]/td/text()").extract(),
-        }'''
         case['address'] = table.xpath("//tr[5]/td/text()").extract()
         case['proposal'] = table.xpath("//tr[6]/td/text()").extract()
         case['decision'] = table.xpath("//tr[8]/td/text()").extract()           
