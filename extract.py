@@ -14,6 +14,7 @@ def extract(text):
 
     # tag words as verb, noun etc
     tagged_words = pos_tag(tokens)
+    tagged_words = [("shed","NN") if x[0] == "shed" else ("screening","NN") if x[0] == "screening"  else x for x in tagged_words]
 
     
     #We don't want keywords to contain anything in this list
@@ -21,6 +22,7 @@ def extract(text):
 
     # NLTK Chunking - detects noun phrases and phrases of form verb noun or adj noun
     patterns = """NP: {<JJ>*<NN><NNS>}
+                      {<CD>}
                       {<JJ><NN><JJ><NN>}
                       {<JJR><NNS>}
                       {<JJ>*<NNS>}
@@ -56,6 +58,6 @@ def extract(text):
     #lems = filter(lambda lem: not any(char in lem for char in forbidden), lems)
 
     return tuple(lems)
-    #return lemmatizables
+    #return tagged_words
 	
-print(extract("Erection of an additional floor at roof level; installation of a door opening from the rear of the second floor and erection of obscure glazed privacy screening over part of the back addition to enable its use as a terrace. "))
+print(extract("Erection of an additional floor at roof level; and erection of a 1.7m high obscure glazed privacy screen around flat roof at second floor level, in connection with its use as a roof terrace. "))
