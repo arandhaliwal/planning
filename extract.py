@@ -14,15 +14,23 @@ def extract(text):
 
     # tag words as verb, noun etc
     tagged_words = pos_tag(tokens)
-    tagged_words = [("shed","NN") if x[0] == "shed" else ("screening","NN") if x[0] == "screening"  else x for x in tagged_words]
+    tagged_words = [("shed","NN") if x[0] == "shed"
+                    else ("screening","NN") if x[0] == "screening"
+                    else ("existing","JJ") if x[0] == "existing"
+                    else ("glazed","JJ") if x[0] == "glazed"
+                    else x for x in tagged_words]
 
     
     #We don't want keywords to contain anything in this list
     forbidden = ['.',',',';',':','?','!','+',')','(','[',']','/','<','>','"','©','1','2','3','4','5','6','7','8','9','0']
 
     # NLTK Chunking - detects noun phrases and phrases of form verb noun or adj noun
-    patterns = """NP: {<JJ>*<NN><NNS>}
+    patterns = """NP: {<CD><JJ><JJ><NN>}
+                      {<JJ>*<NN><NNS>}
+                      {<CD><NNS>}
                       {<CD>}
+                      {<JJ><NN><RB><NN>}
+                      {<JJ><RP><NN>}
                       {<JJ><NN><JJ><NN>}
                       {<JJR><NNS>}
                       {<JJ>*<NNS>}
@@ -60,4 +68,4 @@ def extract(text):
     return tuple(lems)
     #return tagged_words
 	
-print(extract("Erection of an additional floor at roof level; and erection of a 1.7m high obscure glazed privacy screen around flat roof at second floor level, in connection with its use as a roof terrace. "))
+#print(extract("Erection of an additional floor at roof level; and erection of a 1.7m high obscure glazed privacy screen around flat roof at second floor level, in connection with its use as a roof terrace. "))
