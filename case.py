@@ -71,11 +71,23 @@ def extract(text):
     #return tagged_words
     
     
+class Case:
+
+    def __init__(self, args, outcome):
+        self.args = args
+        self.outcome = outcome
+        
+
 with open('app.json') as datafile:
     data = json.load(datafile)
-    
-#proposal = data[0]["proposal"][0].strip()
 
+cases = []
 for datum in data:
-    proposal = datum["proposal"][0].strip()
-    print(extract(proposal))
+    args = extract(datum["proposal"][0].strip())
+    outcome = datum["decision"][0].strip()
+    case = Case(args,outcome)
+    cases.append(case)
+
+for case in cases:
+    pprint(vars(case))
+    
