@@ -83,7 +83,11 @@ with open('app.json') as datafile:
 
 cases = []
 for datum in data:
-    args = extract(datum["proposal"][0].strip())
+    args = []
+    proposal = extract(datum["proposal"][0].strip())
+    constraints = [x.strip() for x in datum["constraints"]]
+    args.append(proposal)
+    args.append(constraints)
     outcome = datum["decision"][0].strip()
     case = Case(args,outcome)
     cases.append(case)
