@@ -88,6 +88,7 @@ for datum in data:
     constraints = [x.strip() for x in datum["constraints"]]
     args.append(proposal)
     args.append(constraints)
+    args = [item for sublist in args for item in sublist]
     outcome = datum["decision"][0].strip()
     case = Case(args,outcome)
     cases.append(case)
