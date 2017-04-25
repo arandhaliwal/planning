@@ -93,6 +93,26 @@ for datum in data:
     case = Case(args,outcome)
     cases.append(case)
 
-for case in cases:
-    pprint(vars(case))
+#for case in cases:
+#    pprint(vars(case))
     
+    
+def differentoutcomes(a,b):
+    return a.outcome != b.outcome
+    
+case1 = Case(['a1','a2'],"application approved")
+case2 = Case(['a1'],"application refused")
+case3 = Case(['a1'],"application refused")
+
+#print(differentoutcomes(case1,case2))
+
+def specificity(a,b):
+    return set(b.args).issubset(a.args)
+    
+#print(morespecific(case1,case2))
+
+#def concision(cases,a,b):
+    
+
+#def attacks(a,b):
+   # return differentoutcomes(a,b) && specificity(a,b) && concision(a,b)
