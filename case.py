@@ -99,20 +99,23 @@ for datum in data:
     
 def differentoutcomes(a,b):
     return a.outcome != b.outcome
-    
-case1 = Case(['a1','a2'],"application approved")
-case2 = Case(['a1'],"application refused")
-case3 = Case(['a1'],"application refused")
 
-#print(differentoutcomes(case1,case2))
 
+#A is more specific than B
 def specificity(a,b):
     return set(b.args).issubset(a.args)
     
-#print(morespecific(case1,case2))
+# there does not exist another case in cases which is less specific than a and more specific than b with the same outcome as a
+def concision(cases,a,b):
+    return not any((specificity(a,case) and specificity(case,b) and not(differentoutcomes(a,case)) and (case != a) and (case!=b)) for case in cases)
 
-#def concision(cases,a,b):
+
+def attacks(cases,a,b):
+    return differentoutcomes(a,b) and specificity(a,b) and concision(cases,a,b)
     
+case1 = Case(['a1','a2','a3'],"application approved")
+case2 = Case(['a1'],"application refused")
+case3 = Case(['a1','a2'],"application approved")
 
-#def attacks(a,b):
-   # return differentoutcomes(a,b) && specificity(a,b) && concision(a,b)
+cases = [case1,case2,case3]  
+print(concision(cases,case1,case2))
