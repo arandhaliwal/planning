@@ -113,9 +113,29 @@ def concision(cases,a,b):
 def attacks(cases,a,b):
     return differentoutcomes(a,b) and specificity(a,b) and concision(cases,a,b)
     
-case1 = Case(['a1','a2','a3'],"application approved")
-case2 = Case(['a1'],"application refused")
-case3 = Case(['a1','a2'],"application approved")
+def newcaseattacks(newcase,targetcase):
+    return not specificity(newcase,targetcase)
+    
+case1 = Case([],"plus")
+case2 = Case(["S"],"minus")
+case3 = Case(["S","O"],"plus")
+case4 = Case(["S","E"],"plus")
+case5 = Case(["S","E","O"],"minus")
+case6 = Case(["S","E","O","M"],"plus")
 
-cases = [case1,case2,case3]  
-print(concision(cases,case1,case2))
+casebase = [case1,case2,case3,case4,case5,case6]
+
+newcase = Case(["S","E","O","G"],"unknown")
+
+for case in casebase:
+    for othercase in casebase:
+        if attacks(casebase,case,othercase):
+            print("ATTACKER")
+            pprint(vars(case))
+            print("VICTIM")
+            pprint(vars(othercase))
+    if newcaseattacks(newcase,case):
+            print("ATTACKER")
+            pprint(vars(newcase))
+            print("VICTIM")
+            pprint(vars(case))
