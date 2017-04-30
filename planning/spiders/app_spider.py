@@ -21,7 +21,7 @@ class ApplicationSpider(scrapy.Spider):
             summaryPage = response.urljoin(result.css("a::attr(href)")[0].extract())       
             yield scrapy.Request(summaryPage, callback=self.parseSummaryPage)
         nextPage = response.css("a.next::attr(href)")[0].extract()
-        if nextPage.endswith('2'):
+        if (nextPage.endswith('2') or nextPage.endswith('3') or nextPage.endswith('4') or nextPage.endswith('5') or nextPage.endswith('6')):
             nextPage = response.urljoin(nextPage)
             yield scrapy.Request(nextPage, callback = self.parseResultsPage)
             

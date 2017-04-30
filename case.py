@@ -81,20 +81,21 @@ class Case:
 with open('app.json') as datafile:
     data = json.load(datafile)
 
-cases = []
+casebase = []
 for datum in data:
     args = []
-    proposal = extract(datum["proposal"][0].strip())
-    constraints = [x.strip() for x in datum["constraints"]]
-    args.append(proposal)
+    #proposal = extract(datum["proposal"][0].strip())
+    constraints = [(x.replace(":","")).strip() for x in datum["constraints"]]
+    #args.append(proposal)
     args.append(constraints)
     args = [item for sublist in args for item in sublist]
     outcome = datum["decision"][0].strip()
-    case = Case(args,outcome)
-    cases.append(case)
+    if (outcome == 'Application Approved' or outcome == 'Application Refused'):
+        case = Case(args,outcome)
+        casebase.append(case)
 
-#for case in cases:
-#    pprint(vars(case))
+#for case in casebase:
+    #pprint(vars(case))
     
     
 def differentoutcomes(a,b):
@@ -116,7 +117,7 @@ def attacks(cases,a,b):
 def newcaseattacks(newcase,targetcase):
     return not specificity(newcase,targetcase)
     
-case1 = Case([],"plus")
+'''case1 = Case([],"plus")
 case2 = Case(["S"],"minus")
 case3 = Case(["S","O"],"plus")
 case4 = Case(["S","E"],"plus")
@@ -125,17 +126,19 @@ case6 = Case(["S","E","O","M"],"plus")
 
 casebase = [case1,case2,case3,case4,case5,case6]
 
-newcase = Case(["S","E","O","G"],"unknown")
+newcase = Case(["S","E","O","G"],"unknown")'''
 
 for case in casebase:
     for othercase in casebase:
         if attacks(casebase,case,othercase):
             print("ATTACKER")
+            #pprint(case)
             pprint(vars(case))
             print("VICTIM")
+            #pprint(othercase)
             pprint(vars(othercase))
-    if newcaseattacks(newcase,case):
+        '''if newcaseattacks(newcase,case):
             print("ATTACKER")
             pprint(vars(newcase))
             print("VICTIM")
-            pprint(vars(case))
+            pprint(vars(case))'''
