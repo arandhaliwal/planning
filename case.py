@@ -84,10 +84,10 @@ with open('app.json') as datafile:
 casebase = []
 for datum in data:
     args = []
-    #proposal = extract(datum["proposal"][0].strip())
-    constraints = [(x.replace(":","")).strip() for x in datum["constraints"]]
-    #args.append(proposal)
-    args.append(constraints)
+    proposal = extract(datum["proposal"][0].strip())
+    #constraints = [(x.replace(":","")).strip() for x in datum["constraints"]]
+    args.append(proposal)
+    #args.append(constraints)
     args = [item for sublist in args for item in sublist]
     outcome = datum["decision"][0].strip()
     if (outcome == 'Application Approved' or outcome == 'Application Refused'):
@@ -104,7 +104,7 @@ def differentoutcomes(a,b):
 
 #A is more specific than B
 def specificity(a,b):
-    return set(b.args).issubset(a.args)
+    return set(b.args).issubset(set(a.args))
     
 # there does not exist another case in cases which is less specific than a and more specific than b with the same outcome as a
 def concision(cases,a,b):
