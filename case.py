@@ -27,18 +27,7 @@ def extract(text):
     forbidden = ['.',',',';',':','?','!','+',')','(','[',']','/','<','>','"','©','1','2','3','4','5','6','7','8','9','0']
 
     # NLTK Chunking - detects noun phrases and phrases of form verb noun or adj noun
-    patterns = """NP: {<CD><JJ><JJ><NN>}
-                      {<JJ>*<NN><NNS>}
-                      {<CD><NNS>}
-                      {<CD>}
-                      {<JJ><NN><RB><NN>}
-                      {<JJ><RP><NN>}
-                      {<JJ><NN><JJ><NN>}
-                      {<JJR><NNS>}
-                      {<JJ>*<NNS>}
-                      {<NN><NNS>} 
-                      {<JJ><NNS>}
-                      {<JJ>*<NN>*}
+    patterns = """NP: {<NN><NNS>} 
                       {<NN>*}
                       {<NNS>*}"""
     chunker = RegexpParser(patterns)
@@ -81,13 +70,13 @@ class Case:
 with open('app.json') as datafile:
     data = json.load(datafile)
 
-casebase = []
+'''casebase = []
 for datum in data:
     args = []
     proposal = extract(datum["proposal"][0].strip())
-    #constraints = [(x.replace(":","")).strip() for x in datum["constraints"]]
+    constraints = [(x.replace(":","")).strip() for x in datum["constraints"]]
     args.append(proposal)
-    #args.append(constraints)
+    args.append(constraints)
     args = [item for sublist in args for item in sublist]
     outcome = datum["decision"][0].strip()
     if (outcome == 'Application Approved' or outcome == 'Application Refused'):
@@ -95,7 +84,7 @@ for datum in data:
         casebase.append(case)
 
 #for case in casebase:
-    #pprint(vars(case))
+    #pprint(vars(case))'''
     
     
 def differentoutcomes(a,b):
@@ -117,7 +106,7 @@ def attacks(cases,a,b):
 def newcaseattacks(newcase,targetcase):
     return not specificity(newcase,targetcase)
     
-'''case1 = Case([],"plus")
+case1 = Case([],"plus")
 case2 = Case(["S"],"minus")
 case3 = Case(["S","O"],"plus")
 case4 = Case(["S","E"],"plus")
@@ -126,7 +115,7 @@ case6 = Case(["S","E","O","M"],"plus")
 
 casebase = [case1,case2,case3,case4,case5,case6]
 
-newcase = Case(["S","E","O","G"],"unknown")'''
+newcase = Case(["S","E","O","G"],"unknown")
 
 for case in casebase:
     for othercase in casebase:
@@ -137,8 +126,8 @@ for case in casebase:
             print("VICTIM")
             #pprint(othercase)
             pprint(vars(othercase))
-        '''if newcaseattacks(newcase,case):
-            print("ATTACKER")
-            pprint(vars(newcase))
-            print("VICTIM")
-            pprint(vars(case))'''
+    if newcaseattacks(newcase,case):
+        print("ATTACKER")
+        pprint(vars(newcase))
+        print("VICTIM")
+        pprint(vars(case))
