@@ -14,9 +14,14 @@ with open("keywords.txt","r") as keywords:
 def extract(text):
     """Gets the keywords from a text excerpt."""
     result = []
-    for word in wordlist:
-        if word in text:
-            result.append(word)
+    for keyword in wordlist:
+        if keyword in text:
+            result.append(keyword)
+    result = ["screen" if x == "screening" 
+               else "glazed" if x == "glazing"
+               else "roof slope" if x == "roofslope"
+               else x for x in result]
+    result = set(result)
     return result
     
 class Case:
