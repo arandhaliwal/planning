@@ -4,61 +4,20 @@ from nltk.stem import WordNetLemmatizer
 import json
 from pprint import pprint
 
+with open("keywords.txt","r") as keywords:
+    wordlist = []
+    for line in keywords:
+        wordlist.append(line)
+    wordlist = [i.strip() for i in wordlist]
+         
+
 def extract(text):
-    """Gets the keywords from a text excerpt.
-    The text is split into words and the boring words are removed.
-    Args:
-        text (str): The text to get keywords from.
-    Returns:
-        (Sequence[str]): The keywords of the text.
-    """
-    tokens = [word.lower() for word in word_tokenize(text)]
-
-    # tag words as verb, noun etc
-    tagged_words = pos_tag(tokens)
-    tagged_words = [("shed","NN") if x[0] == "shed"
-                    else ("screening","NN") if x[0] == "screening"
-                    else ("existing","JJ") if x[0] == "existing"
-                    else ("glazed","JJ") if x[0] == "glazed"
-                    else x for x in tagged_words]
-
-    
-    #We don't want keywords to contain anything in this list
-    forbidden = ['.',',',';',':','?','!','+',')','(','[',']','/','<','>','"','©','1','2','3','4','5','6','7','8','9','0']
-
-    # NLTK Chunking - detects noun phrases and phrases of form verb noun or adj noun
-    patterns = """NP: {<NN><NNS>} 
-                      {<NN>*}
-                      {<NNS>*}"""
-    chunker = RegexpParser(patterns)
-    chunks = chunker.parse(tagged_words)
-
-    #these are the phrases we want, as lists within a list
-    validphrases = []
-    for t in chunks.subtrees():
-        if t.label() == 'NP':
-            validphrases.append([x for x,y in t.leaves()])
-
-    #turning lists within lists into actual noun phrases i.e [[radiation], [breast,cancer]] becomes [radiation, breast cancer]
-    lemmatizables = []
-    for sublist in validphrases:
-        lemmatizables.append(' '.join(sublist))
-
-    lemmatizer = WordNetLemmatizer()
-    lems = [lemmatizer.lemmatize(x) for x in lemmatizables]
-
-    with open('stopwords.txt', 'r') as stopwords:
-        wordlist = []
-        for line in stopwords:
-            wordlist.append(line)
-        wordlist = [i.strip() for i in wordlist]
-    #removing stopwords after lemmatizinga, then removing anything containing punctuation or a number
-    lems = filter(lambda lem: lem not in wordlist, lems)
-    #lems = filter(lambda lem: not any(char in lem for char in forbidden), lems)
-
-    return tuple(lems)
-    #return tagged_words
-    
+    """Gets the keywords from a text excerpt."""
+    result = []
+    for word in wordlist:
+        if word in text:
+            result.append(word)
+    return result
     
 class Case:
 
@@ -70,21 +29,21 @@ class Case:
 with open('app.json') as datafile:
     data = json.load(datafile)
 
-'''casebase = []
+casebase = []
 for datum in data:
     args = []
     proposal = extract(datum["proposal"][0].strip())
-    constraints = [(x.replace(":","")).strip() for x in datum["constraints"]]
+    #constraints = [(x.replace(":","")).strip() for x in datum["constraints"]]
     args.append(proposal)
-    args.append(constraints)
+    #args.append(constraints)
     args = [item for sublist in args for item in sublist]
     outcome = datum["decision"][0].strip()
     if (outcome == 'Application Approved' or outcome == 'Application Refused'):
         case = Case(args,outcome)
         casebase.append(case)
 
-#for case in casebase:
-    #pprint(vars(case))'''
+for case in casebase:
+    pprint(vars(case))
     
     
 def differentoutcomes(a,b):
@@ -106,7 +65,7 @@ def attacks(cases,a,b):
 def newcaseattacks(newcase,targetcase):
     return not specificity(newcase,targetcase)
     
-case1 = Case([],"plus")
+'''case1 = Case([],"plus")
 case2 = Case(["S"],"minus")
 case3 = Case(["S","O"],"plus")
 case4 = Case(["S","E"],"plus")
@@ -115,9 +74,9 @@ case6 = Case(["S","E","O","M"],"plus")
 
 casebase = [case1,case2,case3,case4,case5,case6]
 
-newcase = Case(["S","E","O","G"],"unknown")
+newcase = Case(["S","E","O","G"],"unknown")'''
 
-for case in casebase:
+'''for case in casebase:
     for othercase in casebase:
         if attacks(casebase,case,othercase):
             print("ATTACKER")
@@ -130,4 +89,4 @@ for case in casebase:
         print("ATTACKER")
         pprint(vars(newcase))
         print("VICTIM")
-        pprint(vars(case))
+        pprint(vars(case))'''

@@ -1,15 +1,18 @@
 erection
+replacement
+retention
 bicycle store
 front garden
 rear garden
-boundary wall
+boundary
 additional floor
 roof level
+roof terrace
 door
 ground floor
-first floor
 second floor
 third floor
+screen
 screening
 back addition
 terrace
@@ -20,9 +23,22 @@ lightwell
 excavation
 basement
 rooflight
+single storey
 two storey
 three storey
 staircase
 parapet wall
 storage building
 window
+flat roof
+roof slope
+roofslope
+balustrade
+glazed
+glazing
+balcony
+railing
+mansard
+maisonette
+bedsit
+uPVC
