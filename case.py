@@ -35,6 +35,8 @@ with open('app.json') as datafile:
     data = json.load(datafile)
 
 casebase = []
+defaultcase = Case([],'Application Refused')
+casebase.append(defaultcase)
 for datum in data:
     args = []
     proposal = extract(datum["proposal"][0].strip())
@@ -47,8 +49,8 @@ for datum in data:
         case = Case(args,outcome)
         casebase.append(case)
 
-for case in casebase:
-    pprint(vars(case))
+#for case in casebase:
+    #pprint(vars(case))
     
     
 def differentoutcomes(a,b):
@@ -81,7 +83,7 @@ casebase = [case1,case2,case3,case4,case5,case6]
 
 newcase = Case(["S","E","O","G"],"unknown")'''
 
-'''for case in casebase:
+for case in casebase:
     for othercase in casebase:
         if attacks(casebase,case,othercase):
             print("ATTACKER")
@@ -90,13 +92,13 @@ newcase = Case(["S","E","O","G"],"unknown")'''
             print("VICTIM")
             #pprint(othercase)
             pprint(vars(othercase))
-    if newcaseattacks(newcase,case):
+    '''if newcaseattacks(newcase,case):
         print("ATTACKER")
         pprint(vars(newcase))
         print("VICTIM")
         pprint(vars(case))'''
         
-'''f = open("input.dl","w+")
+f = open("input.dl","w+")
 count = 0
 for case in casebase:
     count += 1
@@ -109,4 +111,4 @@ for case in casebase:
         count2 += 1
         if attacks(casebase,case,othercase):
             f.write("att(case%d,case%d).\n" % (count1,count2))
-f.close()'''
+f.close()
