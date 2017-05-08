@@ -95,3 +95,18 @@ newcase = Case(["S","E","O","G"],"unknown")'''
         pprint(vars(newcase))
         print("VICTIM")
         pprint(vars(case))'''
+        
+'''f = open("input.dl","w+")
+count = 0
+for case in casebase:
+    count += 1
+    f.write("arg(case%d).\n" % (count))    
+count1 = 0
+for case in casebase:
+    count1 += 1
+    count2 = 0
+    for othercase in casebase:
+        count2 += 1
+        if attacks(casebase,case,othercase):
+            f.write("att(case%d,case%d).\n" % (count1,count2))
+f.close()'''
