@@ -3,6 +3,7 @@ from nltk import pos_tag, word_tokenize, RegexpParser
 from nltk.stem import WordNetLemmatizer
 import json
 from pprint import pprint
+import os
 
 with open("keywords.txt","r") as keywords:
     wordlist = []
@@ -135,3 +136,5 @@ for case in casebase:
     if newcaseattacks(newcase,case):
         f.write("att(newcase,case%d).\n" % (count1))
 f.close()
+
+os.system("gringo ground.dl input.dl | clasp 0")
