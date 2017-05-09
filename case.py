@@ -40,28 +40,36 @@ casebase.append(defaultcase)
 for datum in data:
     args = []
     proposal = extract(datum["proposal"][0].strip())
-    #constraints = [(x.replace(":","")).strip() for x in datum["constraints"]]
+    constraints = [(x.replace(":","")).strip() for x in datum["constraints"]]
     args.append(proposal)
-    #args.append(constraints)
+    args.append(constraints)
     args = [item for sublist in args for item in sublist]
     outcome = datum["decision"][0].strip()
     if (outcome == 'Application Approved' or outcome == 'Application Refused'):
         case = Case(args,outcome)
         casebase.append(case)
 
-newcase = Case(['back addition',
-                'additional floor',
-                'glazed',
-                'erection',
-                'roof level',
-                'terrace',
-                'screen',
-                'door',
-                'second floor'],'Outcome Unknown')           
+newcase = Case(['glazed',
+          'erection',
+          'screen',
+          'roof level',
+          'additional floor',
+          'back addition',
+          'second floor',
+          'terrace',
+          'door',
+          'Adjacent To Conservation Area (50m)',
+          'Archaeological Priority Area',
+          'Adjacent To Historic Park Or Garden (200m)',
+          'Environment Agency Flood Risk Zone 2',
+          'Environment Agency Flood Risk Zone 3',
+          'Buildings Structures And Works Exceeding 150 Metres',
+          'Controlled Parking Zone U',
+          'Flood Zone 3 Low Residual Risk',
+          'South'],'Outcome Unknown')           
         
 #for case in casebase:
-    #pprint(vars(case))
-    
+    #pprint(vars(case))   
     
 def differentoutcomes(a,b):
     return a.outcome != b.outcome
