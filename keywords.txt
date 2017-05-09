@@ -7,7 +7,6 @@ rear garden
 boundary
 additional floor
 roof level
-roof terrace
 door
 ground floor
 second floor

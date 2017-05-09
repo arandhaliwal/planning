@@ -49,6 +49,16 @@ for datum in data:
         case = Case(args,outcome)
         casebase.append(case)
 
+newcase = Case(['back addition',
+                'additional floor',
+                'glazed',
+                'erection',
+                'roof level',
+                'terrace',
+                'screen',
+                'door',
+                'second floor'],'Outcome Unknown')           
+        
 #for case in casebase:
     #pprint(vars(case))
     
@@ -83,7 +93,7 @@ casebase = [case1,case2,case3,case4,case5,case6]
 
 newcase = Case(["S","E","O","G"],"unknown")'''
 
-for case in casebase:
+'''for case in casebase:
     for othercase in casebase:
         if attacks(casebase,case,othercase):
             print("ATTACKER")
@@ -92,17 +102,20 @@ for case in casebase:
             print("VICTIM")
             #pprint(othercase)
             pprint(vars(othercase))
-    '''if newcaseattacks(newcase,case):
+    if newcaseattacks(newcase,case):
         print("ATTACKER")
         pprint(vars(newcase))
         print("VICTIM")
         pprint(vars(case))'''
-        
+            
+
+#case1 is default case
 f = open("input.dl","w+")
 count = 0
 for case in casebase:
     count += 1
-    f.write("arg(case%d).\n" % (count))    
+    f.write("arg(case%d).\n" % (count))
+f.write("arg(newcase).\n")
 count1 = 0
 for case in casebase:
     count1 += 1
@@ -111,4 +124,6 @@ for case in casebase:
         count2 += 1
         if attacks(casebase,case,othercase):
             f.write("att(case%d,case%d).\n" % (count1,count2))
+    if newcaseattacks(newcase,case):
+        f.write("att(newcase,case%d).\n" % (count1))
 f.close()
