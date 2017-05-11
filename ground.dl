@@ -29,3 +29,4 @@ defended_upto(X,Y) :- succ(Z,Y), defended_upto(X,Z), in(V), defeat(V,Y), defeat(
 
 defended(X) :- sup(Y), defended_upto(X,Y).
 in(X) :- defended(X).
+#show in/1.

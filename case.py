@@ -137,4 +137,19 @@ for case in casebase:
         f.write("att(newcase,case%d).\n" % (count1))
 f.close()
 
-os.system("gringo ground.dl input.dl | clasp 0")
+os.system("gringo --warn none ground.dl input.dl | clasp 0 >extension.txt")
+
+with open("extension.txt","r") as extension:
+    if "in(case1)" in extension:
+        print("Application Refused")
+    else:
+        print("Application Approved")
+
+
+
+
+
+
+
+
+
