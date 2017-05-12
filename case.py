@@ -36,7 +36,7 @@ with open('app.json') as datafile:
     data = json.load(datafile)
 
 casebase = []
-defaultcase = Case([],'Application Refused')
+defaultcase = Case([],'Application Approved')
 casebase.append(defaultcase)
 for datum in data:
     args = []
@@ -50,27 +50,21 @@ for datum in data:
         case = Case(args,outcome)
         casebase.append(case)
 
-newcase = Case(['glazed',
-          'erection',
-          'screen',
-          'roof level',
-          'additional floor',
-          'back addition',
-          'second floor',
+newcase = Case(['mansard',
           'terrace',
-          'door',
-          'Adjacent To Conservation Area (50m)',
-          'Archaeological Priority Area',
-          'Adjacent To Historic Park Or Garden (200m)',
-          'Environment Agency Flood Risk Zone 2',
-          'Environment Agency Flood Risk Zone 3',
-          'Buildings Structures And Works Exceeding 150 Metres',
+          'roof extension',
           'Controlled Parking Zone U',
+          'Environment Agency Flood Risk Zone 2',
+          'Buildings Structures And Works Exceeding 150 Metres',
           'Flood Zone 3 Low Residual Risk',
-          'South'],'Outcome Unknown')           
-        
-#for case in casebase:
-    #pprint(vars(case))   
+          'Adjacent To Historic Park Or Garden (200m)',
+          'Environment Agency Flood Risk Zone 3'],'Outcome Unknown')           
+
+'''count = 0
+for case in casebase:
+    count += 1
+    pprint("case%d:" % count)
+    pprint(vars(case))  ''' 
     
 def differentoutcomes(a,b):
     return a.outcome != b.outcome
@@ -138,13 +132,26 @@ for case in casebase:
 f.close()
 
 os.system("gringo --warn none ground.dl input.dl | clasp 0 >extension.txt")
+        
+if 'in(case1)' in open('extension.txt').read():  
+    print("Application Approved")
+else:
+    print("Application Refused")
 
-with open("extension.txt","r") as extension:
-    if "in(case1)" in extension:
-        print("Application Refused")
-    else:
-        print("Application Approved")
+    
+#refusal case
+#find something that attacks default, then backtrack until find one that isn't attacked
 
+def findattackers(casebase,ourcase):
+    list = []
+    for case in casebase:
+        if attacks(casebase,case,ourcase):
+            list.append(case)
+    return list
+
+
+        
+        
 
 
 
