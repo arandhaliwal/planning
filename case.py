@@ -50,15 +50,25 @@ for datum in data:
         case = Case(args,outcome)
         casebase.append(case)
 
-newcase = Case(['mansard',
-          'terrace',
-          'roof extension',
-          'Controlled Parking Zone U',
-          'Environment Agency Flood Risk Zone 2',
-          'Buildings Structures And Works Exceeding 150 Metres',
-          'Flood Zone 3 Low Residual Risk',
+newcase = Case(['terrace',
+          'additional floor',
+          'roof level',
+          'second floor',
+          'door',
+          'window',
+          'erection',
+          'glazed',
+          'back addition',
+          'screen',
+          'Adjacent To Conservation Area (50m)',
+          'Archaeological Priority Area',
           'Adjacent To Historic Park Or Garden (200m)',
-          'Environment Agency Flood Risk Zone 3'],'Outcome Unknown')           
+          'Environment Agency Flood Risk Zone 2',
+          'Environment Agency Flood Risk Zone 3',
+          'Buildings Structures And Works Exceeding 150 Metres',
+          'Controlled Parking Zone U',
+          'Flood Zone 3 Low Residual Risk',
+          'South'],'Outcome Unknown')       
 
 '''count = 0
 for case in casebase:
@@ -85,16 +95,20 @@ def attacks(cases,a,b):
 def newcaseattacks(newcase,targetcase):
     return not specificity(newcase,targetcase)
     
-'''case1 = Case([],"plus")
-case2 = Case(["S"],"minus")
-case3 = Case(["S","O"],"plus")
-case4 = Case(["S","E"],"plus")
-case5 = Case(["S","E","O"],"minus")
-case6 = Case(["S","E","O","M"],"plus")
+def isnearest(case,newcase,casebase):
+    return specificity(newcase,case) and (not any (specificity(newcase,othercase) and specificity(othercase,case) and case != othercase for othercase in casebase))
+
+      
+'''case1 = Case([],"plus",[],[])
+case2 = Case(["S"],"minus",[],[])
+case3 = Case(["S","O"],"plus",[],[])
+case4 = Case(["S","E"],"plus",[],[])
+case5 = Case(["S","E","O"],"minus",[],[])
+case6 = Case(["S","E","O","M"],"plus",[],[])
 
 casebase = [case1,case2,case3,case4,case5,case6]
 
-newcase = Case(["S","E","O","G"],"unknown")'''
+newcase = Case(["S","E","O","G"],"unknown",[],[])'''
 
 '''for case in casebase:
     for othercase in casebase:
@@ -132,31 +146,21 @@ for case in casebase:
 f.close()
 
 os.system("gringo --warn none ground.dl input.dl | clasp 0 >extension.txt")
+
+def printnearest():
+    for case in casebase:
+        if isnearest(case,newcase,casebase):
+            pprint(vars(case))
         
 if 'in(case1)' in open('extension.txt').read():  
     print("Application Approved")
 else:
     print("Application Refused")
+    
+print("Explanation - The nearest case is:")
+printnearest()
 
     
 #refusal case
 #find something that attacks default, then backtrack until find one that isn't attacked
-
-def findattackers(casebase,ourcase):
-    list = []
-    for case in casebase:
-        if attacks(casebase,case,ourcase):
-            list.append(case)
-    return list
-
-
-        
-        
-
-
-
-
-
-
-
 
