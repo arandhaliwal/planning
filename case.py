@@ -64,7 +64,7 @@ newcase = Case(['mansard',
 for case in casebase:
     count += 1
     pprint("case%d:" % count)
-    pprint(vars(case)) '''
+    pprint(vars(case))'''
     
 def differentoutcomes(a,b):
     return a.outcome != b.outcome
@@ -152,6 +152,5 @@ print("Explanation - The nearest case(s):")
 printnearest()
 
     
-#refusal case
-#find something that attacks default, then backtrack until find one that isn't attacked
+
 
