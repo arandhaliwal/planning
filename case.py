@@ -148,7 +148,7 @@ if 'in(case1)' in open('extension.txt').read():
 else:
     print("Application Refused")
     
-print("Explanation - The nearest case(s):")
+print("\nExplanation - The nearest case(s):")
 printnearest()
 
     
