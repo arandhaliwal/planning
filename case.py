@@ -50,31 +50,21 @@ for datum in data:
         case = Case(args,outcome)
         casebase.append(case)
 
-newcase = Case(['terrace',
-          'additional floor',
-          'roof level',
-          'second floor',
-          'door',
-          'window',
-          'erection',
-          'glazed',
-          'back addition',
-          'screen',
-          'Adjacent To Conservation Area (50m)',
-          'Archaeological Priority Area',
-          'Adjacent To Historic Park Or Garden (200m)',
-          'Environment Agency Flood Risk Zone 2',
-          'Environment Agency Flood Risk Zone 3',
-          'Buildings Structures And Works Exceeding 150 Metres',
+newcase = Case(['mansard',
+          'roof extension',
+          'terrace',
           'Controlled Parking Zone U',
+          'Environment Agency Flood Risk Zone 2',
+          'Buildings Structures And Works Exceeding 150 Metres',
           'Flood Zone 3 Low Residual Risk',
-          'South'],'Outcome Unknown')       
+          'Adjacent To Historic Park Or Garden (200m)',
+          'Environment Agency Flood Risk Zone 3'],'Outcome Unknown')       
 
 '''count = 0
 for case in casebase:
     count += 1
     pprint("case%d:" % count)
-    pprint(vars(case))  ''' 
+    pprint(vars(case)) '''
     
 def differentoutcomes(a,b):
     return a.outcome != b.outcome
@@ -152,12 +142,13 @@ def printnearest():
         if isnearest(case,newcase,casebase):
             pprint(vars(case))
         
+print("Prediction:")
 if 'in(case1)' in open('extension.txt').read():  
     print("Application Approved")
 else:
     print("Application Refused")
     
-print("Explanation - The nearest case is:")
+print("Explanation - The nearest case(s):")
 printnearest()
 
     
