@@ -30,7 +30,19 @@ def reset(text,back):
     text2 = Text(mygui,height = 15,width = 100,bg = darkershade,fg = yellowwhite,font = ("Open Sans Light",12))
     text2.place(x = 250, y = 450)
         
+def retrieve_input1():
+    return text1.get("1.0","end-1c")
+
+def retrieve_input2():
+    return text2.get("1.0","end-1c")    
+    
 def execute(B,label1,text1,label2,text2):
+    f = open("test1.txt","w+")
+    f.write(retrieve_input1())
+    f.close()
+    f = open("test2.txt","w+")
+    f.write(retrieve_input2())
+    f.close()
     p = subprocess.Popen('python case.py',stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     output, errors = p.communicate()
     B.destroy()

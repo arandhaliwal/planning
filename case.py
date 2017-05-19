@@ -4,13 +4,13 @@ from nltk.stem import WordNetLemmatizer
 import json
 from pprint import pprint
 import os
+import sys
 
 with open("keywords.txt","r") as keywords:
     wordlist = []
     for line in keywords:
         wordlist.append(line)
-    wordlist = [i.strip() for i in wordlist]
-         
+    wordlist = [i.strip() for i in wordlist]    
 
 def extract(text):
     """Gets the keywords from a text excerpt."""
@@ -49,16 +49,30 @@ for datum in data:
     if (outcome == 'Application Approved' or outcome == 'Application Refused'):
         case = Case(args,outcome)
         casebase.append(case)
-
-newcase = Case(['mansard',
-          'roof extension',
-          'terrace',
-          'Controlled Parking Zone U',
-          'Environment Agency Flood Risk Zone 2',
-          'Buildings Structures And Works Exceeding 150 Metres',
-          'Flood Zone 3 Low Residual Risk',
-          'Adjacent To Historic Park Or Garden (200m)',
-          'Environment Agency Flood Risk Zone 3'],'Outcome Unknown')       
+        
+with open("test1.txt","r") as input:
+    proposal = input.read()  
+        
+#userinput = input("Please input proposal\n")
+args = extract(proposal)
+#print(args)
+'''constraintslist = ['Adjacent To Conservation Area (50m)',
+                   'Archaeological Priority Area',
+                   'Adjacent To Historic Park Or Garden (200m)',
+                   'Environment Agency Flood Risk Zone 2',
+                   'Environment Agency Flood Risk Zone 3',
+                   'Buildings Structures And Works Exceeding 150 Metres',
+                   'Controlled Parking Zone U',
+                   'Flood Zone 3 Low Residual Risk',
+                   'South']        
+args.update(constraintslist)'''
+constraints = []
+with open("test2.txt","r") as input2:
+    for line in input2:
+        constraints.append(line.strip())
+    args.update(constraints)
+    
+newcase = Case(args,"Outcome Unknown")
 
 '''count = 0
 for case in casebase:
