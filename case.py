@@ -50,7 +50,7 @@ for datum in data:
         case = Case(args,outcome)
         casebase.append(case)
         
-with open("test1.txt","r") as input:
+with open("proposalinput.txt","r") as input:
     proposal = input.read()  
         
 #userinput = input("Please input proposal\n")
@@ -67,7 +67,7 @@ args = extract(proposal)
                    'South']        
 args.update(constraintslist)'''
 constraints = []
-with open("test2.txt","r") as input2:
+with open("constraintsinput.txt","r") as input2:
     for line in input2:
         constraints.append(line.strip())
     args.update(constraints)

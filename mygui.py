@@ -37,10 +37,10 @@ def retrieve_input2():
     return text2.get("1.0","end-1c")    
     
 def execute(B,label1,text1,label2,text2):
-    f = open("test1.txt","w+")
+    f = open("proposalinput.txt","w+")
     f.write(retrieve_input1())
     f.close()
-    f = open("test2.txt","w+")
+    f = open("constraintsinput.txt","w+")
     f.write(retrieve_input2())
     f.close()
     p = subprocess.Popen('python case.py',stdout=subprocess.PIPE,stderr=subprocess.PIPE)
