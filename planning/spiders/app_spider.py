@@ -14,7 +14,7 @@ class ApplicationSpider(scrapy.Spider):
     ]
     
     def parse(self,response):
-        yield FormRequest.from_response(response, formdata = {"searchCriteria.simpleSearchString":"oxberry"}, callback=self.parseResultsPage)
+        yield FormRequest.from_response(response, formdata = {"searchCriteria.simpleSearchString":"waldemar"}, callback=self.parseResultsPage)
     
     def parseResultsPage(self,response):
         for result in response.css("li.searchresult"):
