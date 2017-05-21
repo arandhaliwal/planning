@@ -119,14 +119,14 @@ def computePrediction(newcase,casebase):
 
     os.system("gringo --warn none ground.dl input.dl | clasp 0 >extension.txt")
             
-    print("Prediction:")
+    #print("Prediction:")
     if 'in(case1)' in open('extension.txt').read():  
-        print("Application Approved")
+        return("Application Approved")
     else:
-        print("Application Refused")
+        return("Application Refused")
         
-    print("\nExplanation - The nearest case(s):")
-    printnearest(newcase,casebase)
+    #print("\nExplanation - The nearest case(s):")
+    #printnearest(newcase,casebase)
 
     
 
