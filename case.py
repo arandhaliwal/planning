@@ -1,18 +1,17 @@
-import nltk
-from nltk import pos_tag, word_tokenize, RegexpParser
-from nltk.stem import WordNetLemmatizer
 import json
 from pprint import pprint
 import os
 import sys
 
-with open("keywords.txt","r") as keywords:
-    wordlist = []
-    for line in keywords:
-        wordlist.append(line)
-    wordlist = [i.strip() for i in wordlist]    
+def getKeywords():
+    with open("keywords.txt","r") as keywords:
+        wordlist = []
+        for line in keywords:
+            wordlist.append(line)
+        wordlist = [i.strip() for i in wordlist]
+    return wordlist
 
-def extract(text):
+def extract(text,wordlist):
     """Gets the keywords from a text excerpt."""
     result = []
     for keyword in wordlist:
@@ -30,49 +29,41 @@ class Case:
     def __init__(self, args, outcome):
         self.args = args
         self.outcome = outcome
+              
         
+def buildCasebase(wordlist):
+    with open('app.json') as datafile:
+        data = json.load(datafile) 
+    casebase = []
 
-with open('app.json') as datafile:
-    data = json.load(datafile)
-
-casebase = []
-defaultcase = Case([],'Application Approved')
-casebase.append(defaultcase)
-for datum in data:
-    args = []
-    proposal = extract(datum["proposal"][0].strip())
-    constraints = [(x.replace(":","")).strip() for x in datum["constraints"]]
-    args.append(proposal)
-    args.append(constraints)
-    args = [item for sublist in args for item in sublist]
-    outcome = datum["decision"][0].strip()
-    if (outcome == 'Application Approved' or outcome == 'Application Refused'):
-        case = Case(args,outcome)
-        casebase.append(case)
+    defaultcase = Case([],'Application Approved')
+    casebase.append(defaultcase)
+    for datum in data:
+        args = []
+        proposal = extract(datum["proposal"][0].strip(),wordlist)
+        constraints = [(x.replace(":","")).strip() for x in datum["constraints"]]
+        args.append(proposal)
+        args.append(constraints)
+        args = [item for sublist in args for item in sublist]
+        outcome = datum["decision"][0].strip()
+        if (outcome == 'Application Approved' or outcome == 'Application Refused'):
+            case = Case(args,outcome)
+            casebase.append(case)
+    return casebase
+  
+def getNewCase(wordlist):  
+    with open("proposalinput.txt","r") as input:
+        proposal = input.read()  
+            
+    args = extract(proposal,wordlist)
+    constraints = []
+    with open("constraintsinput.txt","r") as input2:
+        for line in input2:
+            constraints.append(line.strip())
+        args.update(constraints)
         
-with open("proposalinput.txt","r") as input:
-    proposal = input.read()  
-        
-#userinput = input("Please input proposal\n")
-args = extract(proposal)
-#print(args)
-'''constraintslist = ['Adjacent To Conservation Area (50m)',
-                   'Archaeological Priority Area',
-                   'Adjacent To Historic Park Or Garden (200m)',
-                   'Environment Agency Flood Risk Zone 2',
-                   'Environment Agency Flood Risk Zone 3',
-                   'Buildings Structures And Works Exceeding 150 Metres',
-                   'Controlled Parking Zone U',
-                   'Flood Zone 3 Low Residual Risk',
-                   'South']        
-args.update(constraintslist)'''
-constraints = []
-with open("constraintsinput.txt","r") as input2:
-    for line in input2:
-        constraints.append(line.strip())
-    args.update(constraints)
-    
-newcase = Case(args,"Outcome Unknown")
+    newcase = Case(args,"Outcome Unknown")
+    return newcase
 
 '''count = 0
 for case in casebase:
@@ -82,7 +73,6 @@ for case in casebase:
     
 def differentoutcomes(a,b):
     return a.outcome != b.outcome
-
 
 #A is more specific than B
 def specificity(a,b):
@@ -101,69 +91,42 @@ def newcaseattacks(newcase,targetcase):
     
 def isnearest(case,newcase,casebase):
     return specificity(newcase,case) and (not any (specificity(newcase,othercase) and specificity(othercase,case) and case != othercase for othercase in casebase))
-
-      
-'''case1 = Case([],"plus",[],[])
-case2 = Case(["S"],"minus",[],[])
-case3 = Case(["S","O"],"plus",[],[])
-case4 = Case(["S","E"],"plus",[],[])
-case5 = Case(["S","E","O"],"minus",[],[])
-case6 = Case(["S","E","O","M"],"plus",[],[])
-
-casebase = [case1,case2,case3,case4,case5,case6]
-
-newcase = Case(["S","E","O","G"],"unknown",[],[])'''
-
-'''for case in casebase:
-    for othercase in casebase:
-        if attacks(casebase,case,othercase):
-            print("ATTACKER")
-            #pprint(case)
-            pprint(vars(case))
-            print("VICTIM")
-            #pprint(othercase)
-            pprint(vars(othercase))
-    if newcaseattacks(newcase,case):
-        print("ATTACKER")
-        pprint(vars(newcase))
-        print("VICTIM")
-        pprint(vars(case))'''
-            
-
-#case1 is default case
-f = open("input.dl","w+")
-count = 0
-for case in casebase:
-    count += 1
-    f.write("arg(case%d).\n" % (count))
-f.write("arg(newcase).\n")
-count1 = 0
-for case in casebase:
-    count1 += 1
-    count2 = 0
-    for othercase in casebase:
-        count2 += 1
-        if attacks(casebase,case,othercase):
-            f.write("att(case%d,case%d).\n" % (count1,count2))
-    if newcaseattacks(newcase,case):
-        f.write("att(newcase,case%d).\n" % (count1))
-f.close()
-
-os.system("gringo --warn none ground.dl input.dl | clasp 0 >extension.txt")
-
-def printnearest():
+  
+def printnearest(newcase,casebase):
     for case in casebase:
         if isnearest(case,newcase,casebase):
             pprint(vars(case))
+            
+#case1 is default case
+def computePrediction(newcase,casebase):
+    f = open("input.dl","w+")
+    count = 0
+    for case in casebase:
+        count += 1
+        f.write("arg(case%d).\n" % (count))
+    f.write("arg(newcase).\n")
+    count1 = 0
+    for case in casebase:
+        count1 += 1
+        count2 = 0
+        for othercase in casebase:
+            count2 += 1
+            if attacks(casebase,case,othercase):
+                f.write("att(case%d,case%d).\n" % (count1,count2))
+        if newcaseattacks(newcase,case):
+            f.write("att(newcase,case%d).\n" % (count1))
+    f.close()
+
+    os.system("gringo --warn none ground.dl input.dl | clasp 0 >extension.txt")
+            
+    print("Prediction:")
+    if 'in(case1)' in open('extension.txt').read():  
+        print("Application Approved")
+    else:
+        print("Application Refused")
         
-print("Prediction:")
-if 'in(case1)' in open('extension.txt').read():  
-    print("Application Approved")
-else:
-    print("Application Refused")
-    
-print("\nExplanation - The nearest case(s):")
-printnearest()
+    print("\nExplanation - The nearest case(s):")
+    printnearest(newcase,casebase)
 
     
 

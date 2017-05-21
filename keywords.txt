@@ -41,3 +41,22 @@ mansard
 maisonette
 bedsit
 uPVC
+conversion
+self-contained flat
+alteration
+front elevation
+rear elevation
+garage
+house
+charging point
+tree
+enlargement
+demolition
+fell
+timber
+ridge
+outbuilding
+porch
+gable extension
+chimney
+skylight
