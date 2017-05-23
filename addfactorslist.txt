@@ -1,0 +1,38 @@
+bicycle store
+front garden
+rear garden
+boundary
+additional floor
+door
+screen
+back addition
+terrace
+shed
+rear extension
+roof extension
+lightwell
+basement
+rooflight
+staircase
+parapet wall
+storage building
+window
+flat roof
+roof slope
+balustrade
+balcony
+railing
+mansard
+maisonette
+bedsit
+self-contained flat
+front elevation
+rear elevation
+garage
+house
+charging point
+outbuilding
+porch
+gable extension
+chimney
+skylight

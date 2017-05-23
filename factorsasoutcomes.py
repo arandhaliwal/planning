@@ -11,6 +11,11 @@ def getKeywords():
         wordlist = [i.strip() for i in wordlist]
     return wordlist
 
+def getFactor():
+    with open("factorinput.txt","r") as input:
+        factor = input.read()  
+    return factor
+    
 def extract(text,wordlist):
     """Gets the keywords from a text excerpt."""
     result = []
@@ -35,19 +40,19 @@ def buildCasebase(wordlist):
     with open('app.json') as datafile:
         data = json.load(datafile) 
     casebase = []
-
-    defaultcase = Case([],'not rear extension')
+    factor = getFactor()
+    defaultcase = Case([],'not %s' % factor)
     casebase.append(defaultcase)
     for datum in data:
         outcome = datum["decision"][0].strip()
         if (outcome == 'Application Approved'):
             args = []
             proposal = extract(datum["proposal"][0].strip(),wordlist)
-            if 'rear extension' in proposal:
-                proposal.remove('rear extension')
-                outcome = 'rear extension'
+            if factor in proposal:
+                proposal.remove(factor)
+                outcome = factor
             else:
-                outcome = 'not rear extension'
+                outcome = 'not %s' % factor
             constraints = [(x.replace(":","")).strip() for x in datum["constraints"]]
             args.append(proposal)
             args.append(constraints)
@@ -104,6 +109,7 @@ def printnearest(newcase,casebase):
             
 #case1 is default case
 def computePrediction(newcase,casebase):
+    factor = getFactor()
     f = open("input.dl","w+")
     count = 0
     for case in casebase:
@@ -126,6 +132,6 @@ def computePrediction(newcase,casebase):
             
     #print("Prediction:")
     if 'in(case1)' in open('extension.txt').read():  
-        return('not rear extension')
+        return('not %s' % factor)
     else:
-        return('rear extension')
+        return(factor)
