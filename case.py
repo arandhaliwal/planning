@@ -26,9 +26,11 @@ def extract(text,wordlist):
     
 class Case:
 
-    def __init__(self, args, outcome):
+    def __init__(self, args, outcome,attacks,attackedby):
         self.args = args
         self.outcome = outcome
+        self.attacks = attacks
+        self.attackedby = attackedby
               
         
 def buildCasebase(wordlist):
@@ -36,7 +38,7 @@ def buildCasebase(wordlist):
         data = json.load(datafile) 
     casebase = []
 
-    defaultcase = Case([],'Application Approved')
+    defaultcase = Case([],'Application Approved',[],[])
     casebase.append(defaultcase)
     for datum in data:
         args = []
@@ -47,7 +49,7 @@ def buildCasebase(wordlist):
         args = [item for sublist in args for item in sublist]
         outcome = datum["decision"][0].strip()
         if (outcome == 'Application Approved' or outcome == 'Application Refused'):
-            case = Case(args,outcome)
+            case = Case(args,outcome,[],[])
             casebase.append(case)
     return casebase
   
@@ -62,7 +64,7 @@ def getNewCase(wordlist):
             constraints.append(line.strip())
         args.update(constraints)
         
-    newcase = Case(args,"Outcome Unknown")
+    newcase = Case(args,"Outcome Unknown",[],[])
     return newcase
 
 '''count = 0
@@ -113,8 +115,12 @@ def computePrediction(newcase,casebase):
             count2 += 1
             if attacks(casebase,case,othercase):
                 f.write("att(case%d,case%d).\n" % (count1,count2))
+                case.attacks.append(othercase)
+                othercase.attackedby.append(case)
         if newcaseattacks(newcase,case):
             f.write("att(newcase,case%d).\n" % (count1))
+            newcase.attacks.append(case)
+            case.attackedby.append(newcase)
     f.close()
 
     os.system("gringo --warn none ground.dl input.dl | clasp 0 >extension.txt")
