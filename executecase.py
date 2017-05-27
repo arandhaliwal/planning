@@ -64,16 +64,40 @@ def recursivefunctiondisagree(tree,case):
         return anothertreeslist
 
 for case in ge:
+    treeslist = []
+    treebase = [casebase[0],case]
     if casebase[0] in case.attacks:
-        treebase = [casebase[0],case]
-        treeslist = []
         count = 0
         for nextcase in case.attackedby:
             treeslist.append(recursivefunctionagree(treebase,case,count))
             count += 1
+        break
 
-print(treeslist)            
-'''for tree in treeslist:            
+def flatten(mylist):
+    for i in mylist:
+        if isinstance(i, (list,tuple)):
+            for j in flatten(i):
+                yield j
+        else:
+            yield i
+
+
+treeslist = list(flatten(treeslist))  
+
+sublist = []
+trees = []
+for case in treeslist:
+    if case == case1:
+        if sublist: 
+            trees.append(sublist)
+        sublist = [case]
+    else:
+        sublist.append(case)
+trees.append(sublist)
+
+#print(trees)
+
+for tree in trees:     
     for case in tree:
         pprint(case.args)
         pprint(case.outcome)
@@ -81,5 +105,5 @@ print(treeslist)
            print("\nis attacked by...\n")
         else:
             print("\nwhich is unattacked\n")
-    if treeslist[len(treeslist)-1] != tree:
-        print("\nOR\n")'''
+    if trees[len(trees)-1] != tree:
+       print("\nOR\n")
