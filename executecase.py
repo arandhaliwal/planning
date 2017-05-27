@@ -63,15 +63,23 @@ def recursivefunctiondisagree(tree,case):
             count += 1
         return anothertreeslist
 
-for case in ge:
+
+if computePrediction(newcase,casebase) == case1.outcome:        
     treeslist = []
-    treebase = [casebase[0],case]
-    if casebase[0] in case.attacks:
-        count = 0
-        for nextcase in case.attackedby:
-            treeslist.append(recursivefunctionagree(treebase,case,count))
-            count += 1
-        break
+    for case in case1.attackedby:
+        treebase = [casebase[0],case]
+        treeslist.append(recursivefunctiondisagree(treebase,case))
+else:
+    for case in ge:
+        treeslist = []
+        treebase = [casebase[0],case]
+        if casebase[0] in case.attacks:
+            count = 0
+            for nextcase in case.attackedby:
+                treeslist.append(recursivefunctionagree(treebase,case,count))
+                count += 1
+            break
+    
 
 def flatten(mylist):
     for i in mylist:
@@ -94,8 +102,6 @@ for case in treeslist:
     else:
         sublist.append(case)
 trees.append(sublist)
-
-#print(trees)
 
 for tree in trees:     
     for case in tree:
