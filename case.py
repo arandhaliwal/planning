@@ -2,6 +2,7 @@ import json
 from pprint import pprint
 import os
 import sys
+import re
 
 def getKeywords():
     with open("keywords.txt","r") as keywords:
@@ -98,6 +99,7 @@ def printnearest(newcase,casebase):
     for case in casebase:
         if isnearest(case,newcase,casebase):
             pprint(vars(case))
+                      
             
 #case1 is default case
 def computePrediction(newcase,casebase):
@@ -134,6 +136,93 @@ def computePrediction(newcase,casebase):
     #print("\nExplanation - The nearest case(s):")
     #printnearest(newcase,casebase)
 
+def getGroundedExtension(casebase,newcase):
+    with(open("extension.txt")) as extension:
+        for line in extension:
+            if line.startswith("in"):
+                groundedextension = line
+            
+    ge = re.findall(r'\d+', groundedextension)
+    ge = [int(s) for s in ge]
+    ge = [casebase[x-1] for x in ge]
+    if "newcase" in groundedextension:
+        ge.append(newcase)
+    return ge
     
+def recursivefunctiondisagree(tree,case,count,newcase,ge):
+    treecopy = list(tree)
+    nextcase = case.attackedby[count]
+    if nextcase.attackedby == [] or newcase in nextcase.attackedby:
+        return treecopy
+    else:
+        treecopy.append(nextcase)
+        return recursivefunctionagree(treecopy,nextcase,ge)
+
+def recursivefunctionagree(tree,case,ge):
+    treecopy = list(tree)
+    for nextcase in ge:
+        if case in nextcase.attacks:
+            treecopy.append(nextcase)
+            break
+    if nextcase.attackedby == []:
+        return treecopy
+    else:
+        anothertreeslist = []
+        count = 0
+        for next2case in nextcase.attackedby:
+            anothertreeslist.append(recursivefunctiondisagree(treecopy,nextcase,count,newcase,ge))
+            count += 1
+        return anothertreeslist
+        
+def flatten(mylist):
+    for i in mylist:
+        if isinstance(i, (list,tuple)):
+            for j in flatten(i):
+                yield j
+        else:
+            yield i  
+
+def computeExplanation(agreement,ge,casebase,newcase):
+    if agreement:        
+       treeslist = []
+       for case in casebase[0].attackedby:
+           treebase = [casebase[0],case]
+           treeslist.append(recursivefunctionagree(treebase,case,ge))
+    else:
+        for case in ge:
+            treeslist = []
+            treebase = [casebase[0],case]
+            if casebase[0] in case.attacks:
+                count = 0
+                for nextcase in case.attackedby:
+                    treeslist.append(recursivefunctiondisagree(treebase,case,count,newcase,ge))
+                    count += 1
+                break
+    treeslist = list(flatten(treeslist))  
+
+    sublist = []
+    trees = []
+    for case in treeslist:
+        if case == casebase[0]:
+            if sublist: 
+                trees.append(sublist)
+            sublist = [case]
+        else:
+            sublist.append(case)
+    trees.append(sublist)
+    return trees
+
+def printExplanation(trees):
+    for tree in trees:     
+        for case in tree:
+            pprint(case.args)
+            pprint(case.outcome)
+            if tree[len(tree)-1] != case:
+               print("\nis attacked by...\n")
+            else:
+                print("\nwhich is unattacked\n")
+        if trees[len(trees)-1] != tree:
+           print("\nOR\n")
+
 
 
