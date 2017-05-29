@@ -152,13 +152,13 @@ def getGroundedExtension(casebase,newcase):
 def recursivefunctiondisagree(tree,case,count,newcase,ge):
     treecopy = list(tree)
     nextcase = case.attackedby[count]
-    if nextcase.attackedby == [] or newcase in nextcase.attackedby:
+    if nextcase.attackedby == []:
         return treecopy
     else:
         treecopy.append(nextcase)
-        return recursivefunctionagree(treecopy,nextcase,ge)
+        return recursivefunctionagree(treecopy,nextcase,ge,newcase)
 
-def recursivefunctionagree(tree,case,ge):
+def recursivefunctionagree(tree,case,ge,newcase):
     treecopy = list(tree)
     for nextcase in ge:
         if case in nextcase.attacks:
@@ -187,7 +187,7 @@ def computeExplanation(agreement,ge,casebase,newcase):
        treeslist = []
        for case in casebase[0].attackedby:
            treebase = [casebase[0],case]
-           treeslist.append(recursivefunctionagree(treebase,case,ge))
+           treeslist.append(recursivefunctionagree(treebase,case,ge,newcase))
     else:
         for case in ge:
             treeslist = []
