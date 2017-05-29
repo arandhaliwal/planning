@@ -1,4 +1,6 @@
 from case import *
+import sys
+
 
 wordlist = getKeywords()
 
@@ -12,5 +14,5 @@ print(prediction)
 agreement = prediction == casebase[0].outcome
 ge = getGroundedExtension(casebase,newcase)
 trees = computeExplanation(agreement,ge,casebase,newcase)
-print("\nExplanation:\n")
+print("\nExplanations:\n")
 printExplanation(trees)

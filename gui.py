@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import font
 import subprocess
-import os
 
 ebonyclay =  '#42424d'
 darkershade =  '#313139'
@@ -18,9 +17,10 @@ with open("addfactorslist.txt","r") as factors:
             factorslist.append(line)
         factorslist = [i.strip() for i in factorslist]
    
-def reset(text,back):
+def reset(text,back,scrollbar):
     text.destroy()
     back.destroy()
+    scrollbar.destroy()
     B = Button(gui, text = "Execute", command = lambda: execute(B,C,label1,text1,label2,text2,'normal',label3,label4,Lb1),font=("Open Sans Light", 12),bg=ebonyclay,fg = yellowwhite)
     B.place(x = 1550,y = 300)
     
@@ -42,7 +42,7 @@ def reset(text,back):
     label3 = Label(gui,text = "Predict outcome",font=("Open Sans Light", 14),bg=ebonyclay,fg = yellowwhite)
     label3.place(x=1510,y = 250)
 
-    label4 = Label(gui,text = "Predict if something can be added",font=("Open Sans Light", 14),bg=ebonyclay,fg = yellowwhite)
+    label4 = Label(gui,text = "Predict whether something can be added",font=("Open Sans Light", 14),bg=ebonyclay,fg = yellowwhite)
     label4.place(x=1425,y = 450)
     
     Lb1 = Listbox(gui,height = 10,width = 20,bg = darkershade,fg = yellowwhite,font = ("Open Sans Light",12))
@@ -85,11 +85,14 @@ def execute(B,C,label1,text1,label2,text2,type,label3,label4,Lb1):
     label3.destroy()
     label4.destroy()
     Lb1.destroy()
-    text = Text(gui,font=("Open Sans Light", 14),bg=ebonyclay,fg = yellowwhite,bd=0)
+    scrollbar = Scrollbar(gui)
+    scrollbar.pack( side = RIGHT, fill = Y )
+    text = Text(gui,font=("Open Sans Light", 16),bg=ebonyclay,fg = yellowwhite,bd=0,yscrollcommand = scrollbar.set)
     text.pack()
     text.place(x=750,y=200)
     text.insert(END, output)
-    back = Button(gui, text = "Back", command = lambda: reset(text,back),font=("Open Sans Light", 12),bg=ebonyclay,fg = yellowwhite)
+    scrollbar.config( command = text.yview )
+    back = Button(gui, text = "Back", command = lambda: reset(text,back,scrollbar),font=("Open Sans Light", 12),bg=ebonyclay,fg = yellowwhite)
     back.place(x = 0,y = 0)
 
 w = Label(gui,text="Planning Application Outcome Prediction",font=("Open Sans Light", 32),bg=ebonyclay,fg = yellowwhite)
