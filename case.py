@@ -27,11 +27,12 @@ def extract(text,wordlist):
     
 class Case:
 
-    def __init__(self, args, outcome,attacks,attackedby):
+    def __init__(self, args, outcome,attacks,attackedby,origtext):
         self.args = args
         self.outcome = outcome
         self.attacks = attacks
         self.attackedby = attackedby
+        self.origtext = origtext
               
         
 def buildCasebase(wordlist):
@@ -39,18 +40,19 @@ def buildCasebase(wordlist):
         data = json.load(datafile) 
     casebase = []
 
-    defaultcase = Case([],'Application Approved',[],[])
+    defaultcase = Case([],'Application Approved',[],[],'DEFAULT')
     casebase.append(defaultcase)
     for datum in data:
         args = []
-        proposal = extract(datum["proposal"][0].strip(),wordlist)
+        origtext = datum["proposal"][0].strip()
+        proposal = extract(origtext,wordlist)
         constraints = [(x.replace(":","")).strip() for x in datum["constraints"]]
         args.append(proposal)
         args.append(constraints)
         args = [item for sublist in args for item in sublist]
         outcome = datum["decision"][0].strip()
         if (outcome == 'Application Approved' or outcome == 'Application Refused'):
-            case = Case(args,outcome,[],[])
+            case = Case(args,outcome,[],[],origtext)
             casebase.append(case)
     return casebase
   
@@ -65,7 +67,7 @@ def getNewCase(wordlist):
             constraints.append(line.strip())
         args.update(constraints)
         
-    newcase = Case(args,"Outcome Unknown",[],[])
+    newcase = Case(args,"Outcome Unknown",[],[],'NEWCASE: ' + proposal)
     return newcase
 
 '''count = 0
@@ -213,7 +215,7 @@ def computeExplanation(agreement,ge,casebase,newcase):
 def printExplanation(trees):
     for tree in trees:     
         for case in tree:
-            pprint(case.args)
+            print(case.origtext)
             pprint(case.outcome)
             if tree[len(tree)-1] != case:
                print("\nis attacked by...\n")
