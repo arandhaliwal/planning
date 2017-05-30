@@ -152,10 +152,10 @@ def getGroundedExtension(casebase,newcase):
 def recursivefunctiondisagree(tree,case,count,newcase,ge):
     treecopy = list(tree)
     nextcase = case.attackedby[count]
+    treecopy.append(nextcase)
     if nextcase.attackedby == []:
         return treecopy
     else:
-        treecopy.append(nextcase)
         return recursivefunctionagree(treecopy,nextcase,ge,newcase)
 
 def recursivefunctionagree(tree,case,ge,newcase):
@@ -163,16 +163,15 @@ def recursivefunctionagree(tree,case,ge,newcase):
     for nextcase in ge:
         if case in nextcase.attacks:
             treecopy.append(nextcase)
-            break
-    if nextcase.attackedby == []:
-        return treecopy
-    else:
-        anothertreeslist = []
-        count = 0
-        for next2case in nextcase.attackedby:
-            anothertreeslist.append(recursivefunctiondisagree(treecopy,nextcase,count,newcase,ge))
-            count += 1
-        return anothertreeslist
+            if nextcase.attackedby == []:
+                return treecopy
+            else:
+                anothertreeslist = []
+                count = 0
+                for next2case in nextcase.attackedby:
+                    anothertreeslist.append(recursivefunctiondisagree(treecopy,nextcase,count,newcase,ge))
+                    count += 1
+                return anothertreeslist
         
 def flatten(mylist):
     for i in mylist:
@@ -222,7 +221,7 @@ def printExplanation(trees):
             else:
                 print("\nwhich is unattacked\n")
         if trees[len(trees)-1] != tree:
-           print("\nOR\n")
+           print("OR\n")
 
 
 
