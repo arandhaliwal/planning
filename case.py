@@ -159,19 +159,19 @@ def recursivefunctiondisagree(tree,case,count,newcase,ge):
         return recursivefunctionagree(treecopy,nextcase,ge,newcase)
 
 def recursivefunctionagree(tree,case,ge,newcase):
-    treecopy = list(tree)
+    biglist = []
     for nextcase in ge:
         if case in nextcase.attacks:
+            treecopy = list(tree)
             treecopy.append(nextcase)
             if nextcase.attackedby == []:
-                return treecopy
+                biglist.append(treecopy)
             else:
-                anothertreeslist = []
                 count = 0
                 for next2case in nextcase.attackedby:
-                    anothertreeslist.append(recursivefunctiondisagree(treecopy,nextcase,count,newcase,ge))
+                    biglist.append(recursivefunctiondisagree(treecopy,nextcase,count,newcase,ge))
                     count += 1
-                return anothertreeslist
+    return biglist
         
 def flatten(mylist):
     for i in mylist:
@@ -188,15 +188,14 @@ def computeExplanation(agreement,ge,casebase,newcase):
            treebase = [casebase[0],case]
            treeslist.append(recursivefunctionagree(treebase,case,ge,newcase))
     else:
+        treeslist = []
         for case in ge:
-            treeslist = []
-            treebase = [casebase[0],case]
             if casebase[0] in case.attacks:
+                treebase = [casebase[0],case]
                 count = 0
                 for nextcase in case.attackedby:
                     treeslist.append(recursivefunctiondisagree(treebase,case,count,newcase,ge))
                     count += 1
-                break
     treeslist = list(flatten(treeslist))  
 
     sublist = []
