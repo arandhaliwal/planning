@@ -12,7 +12,6 @@ for case in casebase:
     pprint("case%d:" % count)
     pprint(vars(case))'''
 
-
 for i in range(1,250):
     newcase = casebase[i]
     casebase.remove(newcase)
@@ -24,3 +23,4 @@ for i in range(1,250):
         result = "fail"
     print("predicted = " + predo + ", actual = " + actual + "      " + result)
     casebase.append(newcase)
+    

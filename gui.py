@@ -89,7 +89,7 @@ def execute(B,C,label1,text1,label2,text2,type,label3,label4,Lb1):
     scrollbar.pack( side = RIGHT, fill = Y )
     text = Text(gui,font=("Open Sans Light", 16),bg=ebonyclay,fg = yellowwhite,bd=0,yscrollcommand = scrollbar.set)
     text.pack()
-    text.place(x=750,y=200)
+    text.place(x=385,y=200)
     text.insert(END, output)
     scrollbar.config( command = text.yview )
     back = Button(gui, text = "Back", command = lambda: reset(text,back,scrollbar),font=("Open Sans Light", 12),bg=ebonyclay,fg = yellowwhite)

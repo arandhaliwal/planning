@@ -8,7 +8,7 @@ wordlist = getKeywords()
 
 #newcase = getNewCase(wordlist)
 
-'''case1 = Case([],"plus",[],[],'default')
+case1 = Case([],"plus",[],[],'default')
 case2 = Case(["S"],"minus",[],[],'S')
 case3 = Case(["S","O"],"plus",[],[],'SO')
 case4 = Case(["S","E"],"plus",[],[],'SE')
@@ -17,9 +17,9 @@ case6 = Case(["S","E","O","M"],"plus",[],[],'SEOM')
 case7 = Case(["S","E","O","G"],"plus",[],[],'SEOG')
 case8 = Case(["S","E","O","G","M"],"minus",[],[],'SEOGM')
 casebase = [case1,case2,case3,case4,case5]
-newcase = Case(["S","E","O","G"],"unknown",[],[],'SEOG')'''
+newcase = Case(["S","E","O","G"],"unknown",[],[],'SEOG')
 
-case1 = Case([],"minus",[],[],'default')
+'''case1 = Case([],"minus",[],[],'default')
 case2 = Case(["A"],"plus",[],[],'A')
 case3 = Case(["A","B"],"minus",[],[],'AB')
 case4 = Case(["B","C"],"minus",[],[],'BC')
@@ -37,14 +37,14 @@ case15 = Case(["A","B","C","H"],"minus",[],[],'ABCH')
 case16 = Case(["A","B","C","D","H"],"plus",[],[],'ABCDH')
 case17 = Case(["A","B","C","D","H","M"],"plus",[],[],'ABCDHM')
 casebase = [case1,case2,case3,case4,case5,case6,case7,case8,case9,case10,case11,case12,case13,case14,case15,case16,case17]
-newcase = Case(["A","B","C","D","E","F","H","J","K","M"],"unknown",[],[],'ABCDEFHJKM')
+newcase = Case(["A","B","C","D","E","F","H","J","K","M"],"unknown",[],[],'ABCDEFHJKM')'''
 
 print("Prediction:")
 prediction = computePrediction(newcase,casebase)
 if prediction == "Application Approved":
-    prediction = "minus"    #TESTCASE HAS DEFAULT MINUS
+    prediction = "plus"    #KRIS TESTCASE HAS DEFAULT MINUS
 else:
-    prediction = "plus"
+    prediction = "minus"
 print(prediction)
 agreement = prediction == casebase[0].outcome
 ge = getGroundedExtension(casebase,newcase)
