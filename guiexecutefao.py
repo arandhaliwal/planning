@@ -7,6 +7,10 @@ casebase = buildCasebase(wordlist)
 newcase = getNewCase(wordlist)
 
 print("Prediction:")
-print(computePrediction(newcase,casebase))
-print("\nExplanation - The nearest case(s):")
-printnearest(newcase,casebase)
+prediction = computePrediction(newcase,casebase)
+print(prediction)
+agreement = prediction == casebase[0].outcome
+ge = getGroundedExtension(casebase,newcase)
+trees = computeExplanation(agreement,ge,casebase,newcase)
+print("\nExplanations:\n")
+printExplanation(trees)

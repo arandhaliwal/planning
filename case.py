@@ -94,13 +94,13 @@ def attacks(cases,a,b):
 def newcaseattacks(newcase,targetcase):
     return not specificity(newcase,targetcase)
     
-def isnearest(case,newcase,casebase):
+'''def isnearest(case,newcase,casebase):
     return specificity(newcase,case) and (not any (specificity(newcase,othercase) and specificity(othercase,case) and case != othercase for othercase in casebase))
   
 def printnearest(newcase,casebase):
     for case in casebase:
         if isnearest(case,newcase,casebase):
-            pprint(vars(case))
+            pprint(vars(case))'''
                       
             
 #case1 is default case
@@ -194,11 +194,15 @@ def computeExplanation(agreement,ge,casebase,newcase):
         for case in ge:
             if casebase[0] in case.attacks:
                 treebase = [casebase[0],case]
-                count = 0
-                for nextcase in case.attackedby:
-                    treeslist.append(recursivefunctiondisagree(treebase,case,count,newcase,ge))
-                    count += 1
+                if case.attackedby == []:
+                    treeslist.append(treebase)
+                else:
+                    count = 0
+                    for nextcase in case.attackedby:
+                        treeslist.append(recursivefunctiondisagree(treebase,case,count,newcase,ge))
+                        count += 1
     treeslist = list(flatten(treeslist))  
+
 
     sublist = []
     trees = []
@@ -216,7 +220,7 @@ def printExplanation(trees):
     for tree in trees:     
         for case in tree:
             print(case.origtext)
-            pprint(case.outcome)
+            print(case.outcome)
             if tree[len(tree)-1] != case:
                print("\nis attacked by...\n")
             else:

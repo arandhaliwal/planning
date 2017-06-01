@@ -1,4 +1,4 @@
-from knn import *
+from knnfao import *
 import random
 
 
@@ -12,10 +12,10 @@ for case in casebase:
     pprint("case%d:" % count)
     pprint(vars(case))'''
 fcount = 0
-for i in range(1,299):
+for i in range(1,268):
     newcase = casebase[1]
     casebase.remove(newcase)
-    predo = computePrediction(newcase,casebase,4)
+    predo = computePrediction(newcase,casebase,10)
     actual = newcase.outcome
     if predo == actual:
         result = "success"

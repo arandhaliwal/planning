@@ -1,0 +1,3 @@
+problem with knn: new case can be exactly same as an old case but have a different outcome
+unbalanced dataset means that irrelevant cases can be deemed among most relevant
+knn is only working with approval cases, pretty much. refused successes very rare.

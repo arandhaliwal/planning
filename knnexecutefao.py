@@ -1,4 +1,4 @@
-from knn import *
+from knnfao import *
 
 wordlist = getKeywords()
 
@@ -8,6 +8,6 @@ newcase = getNewCase(wordlist)
 
 prediction = computePrediction(newcase,casebase,4)
 
-print("prediction:")
+print("prediction")
 print(prediction)
 

@@ -1,7 +1,6 @@
 from case import *
 import sys
 
-
 wordlist = getKeywords()
 
 casebase = buildCasebase(wordlist)
