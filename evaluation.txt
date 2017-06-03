@@ -1,3 +1,9 @@
 problem with knn: new case can be exactly same as an old case but have a different outcome
 unbalanced dataset means that irrelevant cases can be deemed among most relevant
 knn is only working with approval cases, pretty much. refused successes very rare.
+
+Tests
+
+Regular case (AACBR, reg outcomes):
+
+Flat test on whole casebase each time: 68 fails out of 299 - 77% success rate - but worse than 89% rate if you chose all approved as 268/299 approvals. (better than random at 50%? unsure)

@@ -3,6 +3,7 @@ from pprint import pprint
 import os
 import sys
 import re
+from datetime import datetime
 
 def getKeywords():
     with open("keywords.txt","r") as keywords:
@@ -25,24 +26,32 @@ def extract(text,wordlist):
     result = set(result)
     return result
     
+def convertDate(text):
+    date = datetime.strptime(text[4:], '%d %b %Y')
+    return date
+    
+    
 class Case:
 
-    def __init__(self, args, outcome,attacks,attackedby,origtext):
+    def __init__(self, args, outcome,attacks,attackedby,origtext,date):
         self.args = args
         self.outcome = outcome
         self.attacks = attacks
         self.attackedby = attackedby
         self.origtext = origtext
+        self.date = date
               
         
 def buildCasebase(wordlist):
-    with open('app.json') as datafile:
+    with open('app1.json') as datafile:
         data = json.load(datafile) 
     casebase = []
 
-    defaultcase = Case([],'Application Approved',[],[],'DEFAULT')
+    defaultcase = Case([],'Application Approved',[],[],'DEFAULT',datetime(1900, 1, 1, 0, 0))
     casebase.append(defaultcase)
     for datum in data:
+        date = datum["date"][0].strip()
+        date = convertDate(date)
         args = []
         origtext = datum["proposal"][0].strip()
         proposal = extract(origtext,wordlist)
@@ -52,7 +61,7 @@ def buildCasebase(wordlist):
         args = [item for sublist in args for item in sublist]
         outcome = datum["decision"][0].strip()
         if (outcome == 'Application Approved' or outcome == 'Application Refused'):
-            case = Case(args,outcome,[],[],origtext)
+            case = Case(args,outcome,[],[],origtext,date)
             casebase.append(case)
     return casebase
   
@@ -67,14 +76,8 @@ def getNewCase(wordlist):
             constraints.append(line.strip())
         args.update(constraints)
         
-    newcase = Case(args,"Outcome Unknown",[],[],'NEWCASE: ' + proposal)
+    newcase = Case(args,"Outcome Unknown",[],[],'NEWCASE: ' + proposal,datetime(1900, 1, 1, 0, 0))
     return newcase
-
-'''count = 0
-for case in casebase:
-    count += 1
-    pprint("case%d:" % count)
-    pprint(vars(case))'''
     
 def differentoutcomes(a,b):
     return a.outcome != b.outcome

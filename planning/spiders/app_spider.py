@@ -6,6 +6,7 @@ class Case(scrapy.Item):
     proposal = scrapy.Field()
     decision = scrapy.Field()
     constraints = scrapy.Field()
+    date = scrapy.Field()
 
 class ApplicationSpider(scrapy.Spider):
     name = "app"
@@ -29,6 +30,7 @@ class ApplicationSpider(scrapy.Spider):
         case = Case()    
            
         table = response.xpath("/html/body/div/div/div[2]/div[3]/div[3]/table")
+        case['date'] = table.xpath("//tr[3]/td/text()").extract()
         case['address'] = table.xpath("//tr[5]/td/text()").extract()
         case['proposal'] = table.xpath("//tr[6]/td/text()").extract()
         case['decision'] = table.xpath("//tr[8]/td/text()").extract()           

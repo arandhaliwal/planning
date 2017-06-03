@@ -1,5 +1,4 @@
 *.xml
-*.json
 *.pyc
 casebase.txt
 casebase2.txt

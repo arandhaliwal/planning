@@ -1,5 +1,4 @@
 from case import *
-import random
 
 
 wordlist = getKeywords()
@@ -12,18 +11,31 @@ for case in casebase:
     pprint("case%d:" % count)
     pprint(vars(case))'''
 
-randomnumbers = random.sample(range(1, 299), 50)
-
-
-print(randomnumbers)
-
-casebasetotest = [x for ind, x in enumerate(casebase) if ind not in randomnumbers]
-
-for i in randomnumbers:
-    predo = computePrediction(casebase[i],casebasetotest)
-    actual = casebase[i].outcome
+fcount = 0
+for i in range(1,299):
+    newcase = casebase[1]
+    actual = newcase.outcome
+    casebase.remove(newcase)
+    newcase.outcome = "Outcome Unknown"
+    predo = computePrediction(newcase,casebase)
     if predo == actual:
         result = "success"
     else:
         result = "fail"
-    print("predicted = " + predo + ", actual = " + actual + "      " + result)
+        fcount +=1
+    print("case" + str(i+1) + " predicted = " + predo + ", actual = " + actual + "      " + result)
+    newcase.outcome = actual
+    casebase.append(newcase)
+print(fcount)
+
+'''newcase = casebase[17]
+actual = newcase.outcome
+casebase.remove(newcase)
+newcase.outcome = "Outcome Unknown"
+predo = computePrediction(newcase,casebase)
+print(predo)
+agreement = predo == casebase[0].outcome
+ge = getGroundedExtension(casebase,newcase)
+trees = computeExplanation(agreement,ge,casebase,newcase)
+print("\nExplanation:\n")
+printExplanation(trees)'''
