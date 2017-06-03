@@ -1,9 +1,8 @@
 *.xml
 *.pyc
-casebase.txt
-casebase2.txt
-casebaserearextension.txt
 constraintsinput.txt
+casebase.txt
+casebaserearextension.txt
 extension.txt
 factorinput.txt
 input.dl

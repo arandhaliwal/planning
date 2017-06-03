@@ -43,7 +43,7 @@ class Case:
               
         
 def buildCasebase(wordlist):
-    with open('app1.json') as datafile:
+    with open('app.json') as datafile:
         data = json.load(datafile) 
     casebase = []
 

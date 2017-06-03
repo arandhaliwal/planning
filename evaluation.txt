@@ -4,6 +4,46 @@ knn is only working with approval cases, pretty much. refused successes very rar
 
 Tests
 
+Note: Tests on regular outcomes not very useful due to imbalance of db
+
 Regular case (AACBR, reg outcomes):
 
-Flat test on whole casebase each time: 68 fails out of 299 - 77% success rate - but worse than 89% rate if you chose all approved as 268/299 approvals. (better than random at 50%? unsure)
+Flat test on whole casebase each time: 60 fails out of 300 - 80% accuracy - but worse than 88% rate if you chose all approved (zero rule) as 264/300 approvals. (better than random at 50%? unsure)
+P = 264
+N = 36
+True positives: 229
+False positives = 25
+True negatives = 11
+False negatives = 35
+
+Precision (PPV) = 0.901
+NPV = 0.293
+Recall (TPR) = 0.867
+TNR = 0.305
+
+F1 = 0.884
+
+Temporally ordered test: 70 fails out of 300 - 77% success rate. 
+P = 264
+N = 36
+TP
+FP
+TN
+FN
+
+Precision (PPV) =
+NPV = 0.293
+Recall (TPR) = 
+TNR = 
+
+F1 = 
+
+Not useful to look at local success rates because of imbalanced casebase and lots of approvals at start? (areas with many approvals tend to have higher success rate)
+Local success rates (each 50 tests)
+1. 88%
+2. 78%
+3. 68%
+4. 76%
+5. 82%
+6. 68%
+-> no improvement, seemingly random / determined by location of approvals due to imbalanced dataset.
