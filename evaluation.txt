@@ -1,14 +1,22 @@
+Notes:
+
 problem with knn: new case can be exactly same as an old case but have a different outcome
 unbalanced dataset means that irrelevant cases can be deemed among most relevant
 knn is only working with approval cases, pretty much. refused successes very rare.
 
-Tests
+Tests on regular outcomes not very useful due to imbalance of db
 
-Note: Tests on regular outcomes not very useful due to imbalance of db
+Natural error due to fact that this isnt complete info - only proposal/constraints
 
-Regular case (AACBR, reg outcomes):
+Tests:
 
-Flat test on whole casebase each time: 60 fails out of 300 - 80% accuracy - but worse than 88% rate if you chose all approved (zero rule) as 264/300 approvals. (better than random at 50%? unsure)
+
+
+
+AACBR, reg outcomes:
+
+
+Normal test on whole casebase each time: 80% accuracy - but worse than 88% rate if you chose all approved (zero rule) as 264/300 approvals. (better than random at 50%? unsure)
 P = 264
 N = 36
 True positives: 229
@@ -23,22 +31,24 @@ TNR = 0.305
 
 F1 = 0.884
 
-Temporally ordered test: 70 fails out of 300 - 77% success rate. 
+Temporally ordered test: 70 fails out of 300 - 77% accuracy
 P = 264
 N = 36
-TP
-FP
-TN
-FN
+TP = 222
+FP = 28
+TN = 8
+FN = 42
 
-Precision (PPV) =
-NPV = 0.293
-Recall (TPR) = 
-TNR = 
+Precision (PPV) = 0.888
+NPV = 0.16
+Recall (TPR) = 0.841
+TNR = 0.222
 
-F1 = 
+F1 = 0.817
 
-Not useful to look at local success rates because of imbalanced casebase and lots of approvals at start? (areas with many approvals tend to have higher success rate)
+> Slightly better results with whole cb available - implies better with more information
+
+Not useful to look at local accuracy because of imbalanced casebase and lots of approvals at start? (areas with many approvals tend to have higher success rate)
 Local success rates (each 50 tests)
 1. 88%
 2. 78%
@@ -47,3 +57,65 @@ Local success rates (each 50 tests)
 5. 82%
 6. 68%
 -> no improvement, seemingly random / determined by location of approvals due to imbalanced dataset.
+
+
+
+
+
+AACBR with factors as outcomes:
+
+
+Test with whole casebase (300 cases):
+
+Accuracy = 81% - compared to a best case of 57% using zero rule on negatives - huge improvement
+
+P = 127
+N = 168
+TP = 82
+FP = 11
+TN = 157
+FN = 45
+
+Precision (PPV) = 0.882
+NPV = 0.777
+Recall (TPR) = 0.646
+TNR = 0.935
+
+F1 = 0.746
+
+
+Test with temporal ordering, using only previous cases each time:
+
+Accuracy = 81%
+
+P = 127
+N = 168
+TP = 81
+FP = 10
+TN = 158
+FN = 46
+
+Precision (PPV) = 0.890
+NPV = 0.775
+Recall (TPR) = 0.638
+TNR = 0.940
+
+F1 = 0.743
+
+Very little difference between using whole casebase and only using previous cases each time
+
+Local accuracy rates (measured for every 59 out of 295 cases):
+1. 78%
+2. 78%
+3. 73%
+4. 84%
+5. 76%
+
+No clear pattern as before, possible that positions of cases affects this
+
+
+
+
+
+
+
