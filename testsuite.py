@@ -7,7 +7,7 @@ casebase = buildCasebase(wordlist)
 
 casebase.sort(key=lambda c: c.date)
 #limit casebase to 300 items for now
-casebase = [casebase[0]] + casebase[38:]
+casebase = [casebase[0]] + casebase[32:]
 
 '''li = []
 for case in casebase:
@@ -18,12 +18,12 @@ for word in wordlist:
     print(word + " " + str(li.count(word)))'''
 
 
-'''count = 0
+count = 0
 for case in casebase:
     count += 1
     pprint("case%d:" % count)
     pprint(case.args)
-    pprint(case.outcome)'''
+    pprint(case.outcome)
 
 #flat test of whole cb, no time element
 '''tpcount = 0

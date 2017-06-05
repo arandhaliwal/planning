@@ -3,6 +3,7 @@ from pprint import pprint
 import os
 import sys
 import re
+from datetime import datetime
 
 def getKeywords():
     with open("keywords.txt","r") as keywords:
@@ -25,15 +26,20 @@ def extract(text,wordlist):
     result = set(result)
     return result
     
+def convertDate(text):
+    date = datetime.strptime(text[4:], '%d %b %Y')
+    return date
+    
 class Case:
 
-    def __init__(self, args, outcome,attacks,attackedby,origtext,similarity):
+    def __init__(self, args, outcome,attacks,attackedby,origtext,similarity,date):
         self.args = args
         self.outcome = outcome
         self.attacks = attacks
         self.attackedby = attackedby
         self.origtext = origtext
         self.similarity = similarity
+        self.date = date
               
         
 def buildCasebase(wordlist):
@@ -41,11 +47,13 @@ def buildCasebase(wordlist):
         data = json.load(datafile) 
     casebase = []
 
-    defaultcase = Case([],'Application Approved',[],[],'DEFAULT',0)
+    defaultcase = Case([],'Application Approved',[],[],'DEFAULT',0,datetime(1900, 1, 1, 0, 0))
     casebase.append(defaultcase)
     for datum in data:
         args = []
         origtext = datum["proposal"][0].strip()
+        date = datum["date"][0].strip()
+        date = convertDate(date)
         proposal = extract(origtext,wordlist)
         constraints = [(x.replace(":","")).strip() for x in datum["constraints"]]
         args.append(proposal)
@@ -53,7 +61,7 @@ def buildCasebase(wordlist):
         args = [item for sublist in args for item in sublist]
         outcome = datum["decision"][0].strip()
         if (outcome == 'Application Approved' or outcome == 'Application Refused'):
-            case = Case(args,outcome,[],[],origtext,0)
+            case = Case(args,outcome,[],[],origtext,0,date)
             casebase.append(case)
     return casebase
   
@@ -68,7 +76,7 @@ def getNewCase(wordlist):
             constraints.append(line.strip())
         args.update(constraints)
         
-    newcase = Case(args,"Outcome Unknown",[],[],'NEWCASE: ' + proposal,0)
+    newcase = Case(args,"Outcome Unknown",[],[],'NEWCASE: ' + proposal,0,datetime(1900, 1, 1, 0, 0))
     return newcase
 
 '''count = 0
@@ -85,9 +93,9 @@ def similarity(list1,list2):
 def computePrediction(newcase,casebase,n):
     for case in casebase:
         case.similarity = similarity(newcase.args,case.args)
-    casebase = sorted(casebase, key=lambda x: x.similarity)
-    casebase.reverse()
-    similarcases = casebase[:n]
+    similarcasebase = sorted(casebase, key=lambda x: x.similarity)
+    similarcasebase.reverse()
+    similarcases = similarcasebase[:n]
     '''for c in similarcases:
         print(c.origtext)
         print(c.outcome)

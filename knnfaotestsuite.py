@@ -1,27 +1,96 @@
 from knnfao import *
-import random
 
 
 wordlist = getKeywords()
 
 casebase = buildCasebase(wordlist)
 
+casebase.sort(key=lambda c: c.date)
+#limit casebase to 300 items for now
+#casebase = [casebase[0]] + casebase[31:]
+
 '''count = 0
 for case in casebase:
     count += 1
     pprint("case%d:" % count)
-    pprint(vars(case))'''
-fcount = 0
-for i in range(1,268):
+    pprint(case.args)
+    pprint(case.outcome)'''
+    
+'''li = []
+for case in casebase:
+    for arg in case.args:
+        li.append(arg)
+        
+for word in wordlist:
+    print(word + " " + str(li.count(word)))'''    
+    
+'''tcount = 0
+tpcount = 0
+fpcount = 0
+tncount = 0
+fncount = 0
+for i in range(1,295):
     newcase = casebase[1]
-    casebase.remove(newcase)
-    predo = computePrediction(newcase,casebase,10)
     actual = newcase.outcome
+    casebase.remove(newcase)
+    newcase.outcome = "Outcome Unknown"
+    predo = computePrediction(newcase,casebase,6)
     if predo == actual:
         result = "success"
+        tcount += 1
+        if predo == "back addition":
+            tpcount += 1
+        else:
+            tncount += 1
     else:
         result = "fail"
-        fcount +=1
+        if predo == "back addition":
+            fpcount += 1
+        else:
+            fncount += 1
     print("predicted = " + predo + ", actual = " + actual + "      " + result)
+    newcase.outcome = actual
     casebase.append(newcase)
-print(fcount)
+print("tcount = " + str(tcount))
+print("tpcount = " + str(tpcount))
+print("fpcount = " + str(fpcount))
+print("tncount = " + str(tncount))
+print("fncount = " + str(fncount))'''
+
+'''tpcount = 0
+fpcount = 0
+tncount = 0
+fncount = 0
+tcount = 0
+count = 0
+for i in range(7,295):
+    newcase = casebase[i]
+    actual = newcase.outcome
+    cbtotest = casebase[:i]
+    newcase.outcome = "Outcome Unknown"
+    predo = computePrediction(newcase,cbtotest,6)
+    if predo == actual:
+        tcount += 1
+        result = "success"
+        if predo == "back addition":
+            tpcount += 1
+        else:
+            tncount += 1
+    else:
+        result = "fail"
+        if predo == "back addition":
+            fpcount += 1
+        else:
+            fncount += 1
+    print("case" + str(i+1) + " predicted = " + predo + ", actual = " + actual + "      " + result)
+    count += 1
+    if count % 48 == 0:
+        print("tcount = " + str(tcount))
+        tcount = 0
+    newcase.outcome = actual
+#print("tcount = " + str(tcount))
+print("tpcount = " + str(tpcount))
+print("fpcount = " + str(fpcount))
+print("tncount = " + str(tncount))
+print("fncount = " + str(fncount))'''
+

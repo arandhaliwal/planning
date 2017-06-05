@@ -13,6 +13,7 @@ Tests:
 
 
 
+
 AACBR, reg outcomes:
 
 
@@ -62,35 +63,36 @@ Local success rates (each 50 tests)
 
 
 
+
+
 AACBR with factors as outcomes:
 
 
-Test with whole casebase (300 cases):
+Test with whole casebase (294 cases):
 
 Accuracy = 81% - compared to a best case of 57% using zero rule on negatives - huge improvement
 
-P = 127
+P = 126
 N = 168
 TP = 82
 FP = 11
-TN = 157
+TN = 156
 FN = 45
 
 Precision (PPV) = 0.882
-NPV = 0.777
+NPV = 0.776
 Recall (TPR) = 0.646
 TNR = 0.935
 
 F1 = 0.746
 
-
 Test with temporal ordering, using only previous cases each time:
 
 Accuracy = 81%
 
-P = 127
+P = 126
 N = 168
-TP = 81
+TP = 80
 FP = 10
 TN = 158
 FN = 46
@@ -104,7 +106,7 @@ F1 = 0.743
 
 Very little difference between using whole casebase and only using previous cases each time
 
-Local accuracy rates (measured for every 59 out of 295 cases):
+Local accuracy rates (measured for every 59 out of 294 cases):
 1. 78%
 2. 78%
 3. 73%
@@ -119,3 +121,104 @@ No clear pattern as before, possible that positions of cases affects this
 
 
 
+KNN with regular outcomes: (back addition)
+
+Whole CB:
+
+n = 3
+
+tpcount = 251
+fpcount = 35
+tncount = 1
+fncount = 13
+
+n = 7 
+
+tpcount = 260
+fpcount = 36
+tncount = 0
+fncount = 4
+
+n = 11
+tpcount = 264
+fpcount = 36
+tncount = 0
+fncount = 0
+
+Using KNN with regular outcomes seems pointless as it increasing n pretty much approximates zero rule i.e choosing all as "approved"
+
+Temporal ordered casebase:
+
+^ similar results as before
+
+
+
+
+
+
+
+
+KNN with factors as outcomes: (back addition)
+
+
+Test on whole casebase (294 cases) 
+
+k = 6 for optimal accuracy
+
+Accuracy = 87%
+
+P = 126
+N = 168
+tp = 108
+fp = 20
+tn = 147
+fn = 19
+
+Precision (PPV) = 0.844
+NPV = 0.886
+Recall (TPR) = 0.857
+TNR = 0.875
+
+F1 = 0.850
+
+Similar success using rear extension as factor, k = 8
+
+tp = 107
+fp = 18
+tn = 150
+fn = 19
+
+
+Temporally ordered testing, only using previous cases as casebase:
+
+k = 6
+number of cases = 288 (first few cases must have previous CB entries to draw from)
+
+Accuracy = 83%
+
+P = 126
+N = 168
+tp = 97
+fp = 18
+tn = 143
+fn = 30
+
+not much difference again
+
+Local success rates (taken for every 48 out of 288 cases):
+1. 79%
+2. 87%
+3. 83%
+4. 87%
+5. 87%
+6. 87%
+
+Perhaps some pattern here - weaker at the start?
+
+
+
+
+
+
+
+SPEED

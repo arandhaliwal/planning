@@ -19,11 +19,11 @@ for case in casebase:
     
 #BACK ADDITION
 #flat test of whole cb, no time element
-'''tpcount = 0
+tpcount = 0
 fpcount = 0
 tncount = 0
 fncount = 0
-for i in range(1,296):
+for i in range(1,295):
     newcase = casebase[1]
     actual = newcase.outcome
     casebase.remove(newcase)
@@ -48,10 +48,10 @@ for i in range(1,296):
 print("tpcount = " + str(tpcount))
 print("fpcount = " + str(fpcount))
 print("tncount = " + str(tncount))
-print("fncount = " + str(fncount))'''
+print("fncount = " + str(fncount))
 
 #temporal order testing, with cb = all previous cases each time
-tpcount = 0
+'''tpcount = 0
 fpcount = 0
 tncount = 0
 fncount = 0
@@ -83,7 +83,7 @@ for i in range(1,296):
 print("tpcount = " + str(tpcount))
 print("fpcount = " + str(fpcount))
 print("tncount = " + str(tncount))
-print("fncount = " + str(fncount))
+print("fncount = " + str(fncount))'''
     
 
 #test on one case
