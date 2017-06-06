@@ -5,9 +5,9 @@ wordlist = getKeywords()
 
 casebase = buildCasebase(wordlist)
 
-casebase.sort(key=lambda c: c.date)
+#casebase.sort(key=lambda c: c.date)
 #limit casebase to certain number
-casebase = [casebase[0]] + casebase[684:]
+casebase = [casebase[0]] + casebase[26:]
 
 '''li = []
 for case in casebase:
@@ -32,7 +32,7 @@ print(len(casebase))
 #fpcount = 0
 #tncount = 0
 #fncount = 0
-timings = []
+'''timings = []
 for i in range(1,11):
     newcase = casebase[1]
     actual = newcase.outcome
@@ -43,7 +43,7 @@ for i in range(1,11):
     ti = time.time() - start_time
     timings.append(ti)
     print(ti)
-    '''if predo == actual:
+    if predo == actual:
         result = "success"
         if predo == "Application Approved":
             tpcount += 1
@@ -54,12 +54,12 @@ for i in range(1,11):
         if predo == "Application Approved":
             fpcount += 1
         else:
-            fncount += 1 '''     
+            fncount += 1     
     #print("case" + str(i+1) + " predicted = " + predo + ", actual = " + actual + "      " + result)
     newcase.outcome = actual
     casebase.append(newcase)
 print("average:")
-print(sum(timings)/len(timings))
+print(sum(timings)/len(timings))'''
 # print("minimum:")
 # print(min(timings))
 #print("tpcount = " + str(tpcount))

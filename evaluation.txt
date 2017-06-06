@@ -82,6 +82,17 @@ TNR = 0.935
 
 F1 = 0.746
 
+
+Rear extension test:
+
+tpcount = 83
+fpcount = 15
+tncount = 153
+fncount = 43
+
+accuracy 80%
+
+
 Test with temporal ordering, using only previous cases each time:
 
 Accuracy = 81%
@@ -186,6 +197,7 @@ fp = 17
 tn = 150
 fn = 19
 
+accuracy 88%
 
 Temporally ordered testing, only using previous cases as casebase:
 
@@ -273,17 +285,20 @@ AACBR: 58.4
 KNN: 0.00491
 
 
-Accuracy:
+Analysis of time - some time taken to write to files, but majority of time taken up by gringo/aspartix computing
 
-KNN: Same accuracy for back addition (87%), accuracy for rear extension decreased from 88% to 80% going from 300 to 1400 cases (possibly just due to casebase)
+Accuracy test for 600 cases (FAO back addition test) - similar results
 
-BE: tpcount = 766
-fpcount = 103
-tncount = 464
-fncount = 67
+AACBR - 80%: 
+TP 186
+FP 29
+TN 293
+FN 92
 
-RE: tpcount = 607
-fpcount = 149
-tncount = 525
-fncount = 119
+KNN - 85%
+tpcount = 235
+fpcount = 45
+tncount = 277
+fncount = 43
+
 

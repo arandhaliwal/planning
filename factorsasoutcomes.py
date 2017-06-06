@@ -4,6 +4,7 @@ import os
 import sys
 import re
 from datetime import datetime
+import time
 
 def getKeywords():
     with open("keywords.txt","r") as keywords:

@@ -1,12 +1,13 @@
 from factorsasoutcomes import *
+import time
 
 wordlist = getKeywords()
 
 casebase = buildCasebase(wordlist)
 
-casebase.sort(key=lambda c: c.date)
+#casebase.sort(key=lambda c: c.date)
 #limit casebase to 300 items for now
-casebase = [casebase[0]] + casebase[26:]
+casebase = casebase[:-822]
 
 '''count = 0
 for case in casebase:
@@ -14,7 +15,6 @@ for case in casebase:
     pprint("case%d:" % count)
     pprint(case.args)
     pprint(case.outcome)'''
-    #pprint(case.date)
     
 '''li = []
 for case in casebase:
@@ -22,9 +22,9 @@ for case in casebase:
         li.append(arg)
         
 for word in wordlist:
-    print(word + " " + str(li.count(word)))
+    print(word + " " + str(li.count(word)))'''
     
-print(len(casebase))'''
+print(len(casebase))
     
 #BACK ADDITION
 #flat test of whole cb, no time element
@@ -32,12 +32,14 @@ tpcount = 0
 fpcount = 0
 tncount = 0
 fncount = 0
-for i in range(1,10):
+for i in range(1,601):
     newcase = casebase[1]
     actual = newcase.outcome
     casebase.remove(newcase)
     newcase.outcome = "Outcome Unknown"
+    #start_time = time.time()
     predo = computePrediction(newcase,casebase)
+    #print(time.time() - start_time)
     if predo == actual:
         result = "success"
         if predo == "back addition":
