@@ -234,7 +234,7 @@ def printExplanation(trees):
     for tree in trees:     
         for case in tree:
             print(case.origtext)
-            print("Outcome " + case.outcome)
+            print("Outcome: " + case.outcome)
             if tree[len(tree)-1] != case:
                print("\nis attacked by...\n")
             else:

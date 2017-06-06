@@ -15,14 +15,14 @@ class ApplicationSpider(scrapy.Spider):
     ]
     
     def parse(self,response):
-        yield FormRequest.from_response(response, formdata = {"searchCriteria.simpleSearchString":"oxberry"}, callback=self.parseResultsPage)
+        yield FormRequest.from_response(response, formdata = {"searchCriteria.simpleSearchString":"langthorne"}, callback=self.parseResultsPage)
     
     def parseResultsPage(self,response):
         for result in response.css("li.searchresult"):
             summaryPage = response.urljoin(result.css("a::attr(href)")[0].extract())       
             yield scrapy.Request(summaryPage, callback=self.parseSummaryPage)
         nextPage = response.css("a.next::attr(href)")[0].extract()
-        if (nextPage.endswith('2') or nextPage.endswith('3') or nextPage.endswith('4') or nextPage.endswith('5') or nextPage.endswith('6')):
+        if (nextPage.endswith('2') or nextPage.endswith('3') or nextPage.endswith('4') or nextPage.endswith('5') or nextPage.endswith('6') or nextPage.endswith('7') or nextPage.endswith('8') or nextPage.endswith('9')):
             nextPage = response.urljoin(nextPage)
             yield scrapy.Request(nextPage, callback = self.parseResultsPage)
             

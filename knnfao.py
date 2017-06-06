@@ -92,7 +92,10 @@ def getNewCase(wordlist):
 def similarity(list1,list2):
     inter = set(list1).intersection(set(list2))
     union = set(list1).union(set(list2))
-    return len(inter)/len(union)
+    if len(union) == 0:
+        return 1
+    else:
+        return len(inter)/len(union)
        
 def computePrediction(newcase,casebase,n):
     factor = getFactor()

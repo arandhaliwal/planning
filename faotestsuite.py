@@ -6,16 +6,25 @@ casebase = buildCasebase(wordlist)
 
 casebase.sort(key=lambda c: c.date)
 #limit casebase to 300 items for now
-#casebase = [casebase[0]] + casebase[38:]
+casebase = [casebase[0]] + casebase[26:]
 
 '''count = 0
 for case in casebase:
     count += 1
-    #pprint("case%d:" % count)
-    #pprint(case.args)
-    pprint(case.outcome)
-    #pprint(case.date)'''
+    pprint("case%d:" % count)
+    pprint(case.args)
+    pprint(case.outcome)'''
+    #pprint(case.date)
     
+'''li = []
+for case in casebase:
+    for arg in case.args:
+        li.append(arg)
+        
+for word in wordlist:
+    print(word + " " + str(li.count(word)))
+    
+print(len(casebase))'''
     
 #BACK ADDITION
 #flat test of whole cb, no time element
@@ -23,7 +32,7 @@ tpcount = 0
 fpcount = 0
 tncount = 0
 fncount = 0
-for i in range(1,295):
+for i in range(1,10):
     newcase = casebase[1]
     actual = newcase.outcome
     casebase.remove(newcase)
@@ -51,7 +60,7 @@ print("tncount = " + str(tncount))
 print("fncount = " + str(fncount))
 
 #temporal order testing, with cb = all previous cases each time
-'''tpcount = 0
+'''=tpcount = 0
 fpcount = 0
 tncount = 0
 fncount = 0
@@ -87,12 +96,13 @@ print("fncount = " + str(fncount))'''
     
 
 #test on one case
-'''newcase = casebase[17]
+'''newcase = casebase[294]
 actual = newcase.outcome
 casebase.remove(newcase)
 newcase.outcome = "Outcome Unknown"
 predo = computePrediction(newcase,casebase)
 print(predo)
+print(predo == actual)
 agreement = predo == casebase[0].outcome
 ge = getGroundedExtension(casebase,newcase)
 trees = computeExplanation(agreement,ge,casebase,newcase)

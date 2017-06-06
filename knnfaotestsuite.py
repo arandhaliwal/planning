@@ -7,7 +7,7 @@ casebase = buildCasebase(wordlist)
 
 casebase.sort(key=lambda c: c.date)
 #limit casebase to 300 items for now
-#casebase = [casebase[0]] + casebase[31:]
+casebase = [casebase[0]] + casebase[26:]
 
 '''count = 0
 for case in casebase:
@@ -22,14 +22,16 @@ for case in casebase:
         li.append(arg)
         
 for word in wordlist:
-    print(word + " " + str(li.count(word)))'''    
+    print(word + " " + str(li.count(word)))'''  
+
+print(len(casebase))    
     
-'''tcount = 0
+tcount = 0
 tpcount = 0
 fpcount = 0
 tncount = 0
 fncount = 0
-for i in range(1,295):
+for i in range(1,1401):
     newcase = casebase[1]
     actual = newcase.outcome
     casebase.remove(newcase)
@@ -48,15 +50,17 @@ for i in range(1,295):
             fpcount += 1
         else:
             fncount += 1
-    print("predicted = " + predo + ", actual = " + actual + "      " + result)
+    print("case" + str(i+1) + " predicted = " + predo + ", actual = " + actual + "      " + result)
     newcase.outcome = actual
     casebase.append(newcase)
 print("tcount = " + str(tcount))
 print("tpcount = " + str(tpcount))
 print("fpcount = " + str(fpcount))
 print("tncount = " + str(tncount))
-print("fncount = " + str(fncount))'''
+print("fncount = " + str(fncount))
 
+
+#temporal
 '''tpcount = 0
 fpcount = 0
 tncount = 0
@@ -93,4 +97,3 @@ print("tpcount = " + str(tpcount))
 print("fpcount = " + str(fpcount))
 print("tncount = " + str(tncount))
 print("fncount = " + str(fncount))'''
-
