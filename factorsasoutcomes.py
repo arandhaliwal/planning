@@ -242,3 +242,35 @@ def printExplanation(trees):
                 print("\nwhich is unattacked\n")
         if trees[len(trees)-1] != tree:
            print("OR\n")
+           
+def drawExplanation(trees):    
+    graph = pydotplus.Dot(graph_type='graph',dpi = 300)
+    
+    labelcount = 0
+    for tree in trees:
+        for i in range(len(tree)):
+            case = tree[i]
+            if case.label == 0:
+                labelcount +=1
+                case.label = labelcount
+   
+    for tree in trees:
+        for i in range(len(tree)-1):
+                case = tree[i]
+                nextcase = tree[i+1]
+                if not graph.get_edge(str(case.label),str(nextcase.label)):
+                    edge = pydotplus.Edge(str(case.label),str(nextcase.label))
+                    graph.add_edge(edge)
+    
+    treecaseset = [item for sublist in trees for item in sublist]
+    treecaseset = set(treecaseset)   
+    sortedtreecaseset = sorted(treecaseset, key=lambda x: x.label)
+    print("key:")
+    for case in sortedtreecaseset:
+        print(case.label)
+        print(case.origtext)
+        print(case.outcome)
+        print("")
+    # ok, we are set, let's save our graph into a file
+    graph.write_png('tree.png')
+    os.system("tree.png")

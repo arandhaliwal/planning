@@ -34,13 +34,14 @@ def convertDate(text):
     
 class Case:
 
-    def __init__(self, args, outcome,attacks,attackedby,origtext,date):
+    def __init__(self, args, outcome,attacks,attackedby,origtext,date,label):
         self.args = args
         self.outcome = outcome
         self.attacks = attacks
         self.attackedby = attackedby
         self.origtext = origtext
         self.date = date
+        self.label = label
               
         
 def buildCasebase(wordlist):
@@ -48,7 +49,7 @@ def buildCasebase(wordlist):
         data = json.load(datafile) 
     casebase = []
 
-    defaultcase = Case([],'Application Approved',[],[],'DEFAULT',datetime(1900, 1, 1, 0, 0))
+    defaultcase = Case([],'Application Approved',[],[],'DEFAULT',datetime(1900, 1, 1, 0, 0),0)
     casebase.append(defaultcase)
     for datum in data:
         date = datum["date"][0].strip()
@@ -62,7 +63,7 @@ def buildCasebase(wordlist):
         args = [item for sublist in args for item in sublist]
         outcome = datum["decision"][0].strip()
         if (outcome == 'Application Approved' or outcome == 'Application Refused'):
-            case = Case(args,outcome,[],[],origtext,date)
+            case = Case(args,outcome,[],[],origtext,date,0)
             casebase.append(case)
     return casebase
   
@@ -77,7 +78,7 @@ def getNewCase(wordlist):
             constraints.append(line.strip())
         args.update(constraints)
         
-    newcase = Case(args,"Outcome Unknown",[],[],'NEWCASE: ' + proposal,datetime(1900, 1, 1, 0, 0))
+    newcase = Case(args,"Outcome Unknown",[],[],'NEWCASE: ' + proposal,datetime(1900, 1, 1, 0, 0),0)
     return newcase
     
 def differentoutcomes(a,b):
@@ -233,16 +234,33 @@ def printExplanation(trees):
            print("OR\n")
 
 def drawExplanation(trees):    
-    graph = pydotplus.Dot(graph_type='graph')
-        
+    graph = pydotplus.Dot(graph_type='graph',dpi = 300)
+    
+    labelcount = 0
+    for tree in trees:
+        for i in range(len(tree)):
+            case = tree[i]
+            if case.label == 0:
+                labelcount +=1
+                case.label = labelcount
+   
     for tree in trees:
         for i in range(len(tree)-1):
                 case = tree[i]
                 nextcase = tree[i+1]
-                if not graph.get_edge(case.origtext,nextcase.origtext):
-                    edge = pydotplus.Edge(case.origtext,nextcase.origtext)
+                if not graph.get_edge(str(case.label),str(nextcase.label)):
+                    edge = pydotplus.Edge(str(case.label),str(nextcase.label))
                     graph.add_edge(edge)
-
+    
+    treecaseset = [item for sublist in trees for item in sublist]
+    treecaseset = set(treecaseset)   
+    sortedtreecaseset = sorted(treecaseset, key=lambda x: x.label)
+    print("key:")
+    for case in sortedtreecaseset:
+        print(case.label)
+        print(case.origtext)
+        print(case.outcome)
+        print("")
     # ok, we are set, let's save our graph into a file
     graph.write_png('tree.png')
 

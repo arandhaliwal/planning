@@ -8,3 +8,5 @@ factorinput.txt
 input.dl
 proposalinput.txt
 test.py
+*.png
+apphuge.json
