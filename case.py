@@ -4,6 +4,7 @@ import os
 import sys
 import re
 from datetime import datetime
+import pydotplus
 
 def getKeywords():
     with open("keywords.txt","r") as keywords:
@@ -231,5 +232,17 @@ def printExplanation(trees):
         if trees[len(trees)-1] != tree:
            print("OR\n")
 
+def drawExplanation(trees):    
+    graph = pydotplus.Dot(graph_type='graph')
+        
+    for tree in trees:
+        for i in range(len(tree)-1):
+                case = tree[i]
+                nextcase = tree[i+1]
+                if not graph.get_edge(case.origtext,nextcase.origtext):
+                    edge = pydotplus.Edge(case.origtext,nextcase.origtext)
+                    graph.add_edge(edge)
 
+    # ok, we are set, let's save our graph into a file
+    graph.write_png('tree.png')
 
