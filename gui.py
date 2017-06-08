@@ -9,7 +9,7 @@ darkershade =  '#313139'
 yellowwhite = '#fafaef'
 
 gui = Tk()
-gui.geometry("1920x1080")
+gui.geometry("1920x1010")
 gui.title("Planning Applications")
 gui.configure(background=ebonyclay)
 
@@ -93,18 +93,18 @@ def execute(B,C,label1,text1,label2,text2,type,label3,label4,Lb1):
     f1.place(x=100,y=200)
     scrollbar = Scrollbar(f1)
     scrollbar.pack( side = RIGHT, fill = Y )
-    text = Text(f1,font=("Open Sans Light", 16),bg=ebonyclay,fg = yellowwhite,bd=0,yscrollcommand = scrollbar.set,width=40,height=35)
+    text = Text(f1,font=("Open Sans Light", 16),bg=ebonyclay,fg = yellowwhite,bd=0,yscrollcommand = scrollbar.set,width=40,height=20)
     text.pack()
     text.insert(END, output)
     scrollbar.config( command = text.yview )
     
     frame = Frame(gui)
-    frame.place(x=700,y=200)
+    frame.place(x=800,y=200)
     xscrollbar = Scrollbar(frame, orient=HORIZONTAL)
     yscrollbar = Scrollbar(frame)
     xscrollbar.pack( side = BOTTOM, fill = X )
     yscrollbar.pack( side = RIGHT, fill = Y )
-    canvas = Canvas(frame, bd=0, xscrollcommand=xscrollbar.set, yscrollcommand=yscrollbar.set,width=1100,height=810)
+    canvas = Canvas(frame, bd=0, xscrollcommand=xscrollbar.set, yscrollcommand=yscrollbar.set,width=1000,height=712)
     img = ImageTk.PhotoImage(Image.open("tree.png"))
     canvas.create_image(0,0,image=img)
     canvas.image = img
