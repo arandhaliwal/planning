@@ -167,9 +167,8 @@ def getGroundedExtension(casebase,newcase):
         ge.append(newcase)
     return ge
     
-def recursivefunctiondisagree(tree,case,count,newcase,ge):
+def recursivefunctiondisagree(tree,case,nextcase,newcase,ge):
     treecopy = list(tree)
-    nextcase = case.attackedby[count]
     treecopy.append(nextcase)
     if nextcase.attackedby == []:
         return treecopy
@@ -185,10 +184,8 @@ def recursivefunctionagree(tree,case,ge,newcase):
             if nextcase.attackedby == []:
                 biglist.append(treecopy)
             else:
-                count = 0
                 for next2case in nextcase.attackedby:
-                    biglist.append(recursivefunctiondisagree(treecopy,nextcase,count,newcase,ge))
-                    count += 1
+                    biglist.append(recursivefunctiondisagree(treecopy,nextcase,next2case,newcase,ge))
     return biglist
         
 def flatten(mylist):
@@ -213,10 +210,8 @@ def computeExplanation(agreement,ge,casebase,newcase):
                 if case.attackedby == []:
                     treeslist.append(treebase)
                 else:
-                    count = 0
                     for nextcase in case.attackedby:
-                        treeslist.append(recursivefunctiondisagree(treebase,case,count,newcase,ge))
-                        count += 1
+                        treeslist.append(recursivefunctiondisagree(treebase,case,nextcase,newcase,ge))
     treeslist = list(flatten(treeslist))  
 
     sublist = []
@@ -269,6 +264,8 @@ def drawExplanation(trees):
     for case in sortedtreecaseset:
         print(case.label)
         print(case.origtext)
+        print("Indentified factors:")
+        print("\n".join(case.args))
         print(case.outcome)
         print("")
     # ok, we are set, let's save our graph into a file

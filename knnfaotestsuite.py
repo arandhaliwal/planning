@@ -7,7 +7,7 @@ casebase = buildCasebase(wordlist)
 
 #casebase.sort(key=lambda c: c.date)
 #limit casebase to 300 items for now
-casebase = casebase[:-822]
+#casebase = casebase[:-822]
 
 '''count = 0
 for case in casebase:
@@ -31,7 +31,7 @@ tpcount = 0
 fpcount = 0
 tncount = 0
 fncount = 0
-for i in range(1,601):
+for i in range(1,295):
     newcase = casebase[1]
     actual = newcase.outcome
     casebase.remove(newcase)

@@ -43,7 +43,7 @@ TNR = 0.222
 
 F1 = 0.817
 
-> Slightly better results with whole cb available - implies better with more information
+> Slightly better results with whole cb available - implies better with more information?
 
 Not useful to look at local accuracy because of imbalanced casebase and lots of approvals at start? (areas with many approvals tend to have higher success rate)
 Local success rates (each 50 tests)
