@@ -104,7 +104,7 @@ def execute(B,C,label1,text1,label2,text2,type,label3,label4,Lb1):
     yscrollbar = Scrollbar(frame)
     xscrollbar.pack( side = BOTTOM, fill = X )
     yscrollbar.pack( side = RIGHT, fill = Y )
-    canvas = Canvas(frame, bd=0, xscrollcommand=xscrollbar.set, yscrollcommand=yscrollbar.set,width=1000,height=712)
+    canvas = Canvas(frame, bd=0, xscrollcommand=xscrollbar.set, yscrollcommand=yscrollbar.set,width=1000,height=712,bg = ebonyclay )
     img = ImageTk.PhotoImage(Image.open("tree.png"))
     canvas.create_image(0,0,image=img)
     canvas.image = img

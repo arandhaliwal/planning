@@ -202,8 +202,7 @@ def computeExplanation(agreement,ge,casebase,newcase):
                     for nextcase in case.attackedby:
                         treeslist.append(recursivefunctiondisagree(treebase,case,nextcase,newcase,ge))
     treeslist = list(flatten(treeslist))  
-
-
+    
     sublist = []
     trees = []
     for case in treeslist:
