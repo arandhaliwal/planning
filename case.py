@@ -5,6 +5,7 @@ import sys
 import re
 from datetime import datetime
 import pydotplus
+import time
 
 def getKeywords():
     with open("keywords.txt","r") as keywords:
@@ -64,6 +65,9 @@ def buildCasebase(wordlist):
         outcome = datum["decision"][0].strip()
         if (outcome == 'Application Approved' or outcome == 'Application Refused'):
             case = Case(args,outcome,[],[],origtext,date,0)
+            for othercase in casebase:
+                if case.args == othercase.args and case.outcome != othercase.outcome:
+                    casebase.remove(othercase)
             casebase.append(case)
     return casebase
   
@@ -131,7 +135,6 @@ def computePrediction(newcase,casebase):
             newcase.attacks.append(case)
             case.attackedby.append(newcase)
     f.close()
-
     os.system("gringo --warn none ground.dl input.dl | clasp 0 >extension.txt")
             
     #print("Prediction:")
@@ -253,8 +256,12 @@ def drawExplanation(trees):
     for case in sortedtreecaseset:
         print(case.label)
         print(case.origtext)
+        print("")
         print("Indentified factors:")
+        print("")
         print("\n".join(case.args))
+        print("")
+        print("Outcome:")
         print(case.outcome)
         print("")
     graph.write_png('tree.png')

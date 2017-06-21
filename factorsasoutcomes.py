@@ -5,6 +5,7 @@ import sys
 import re
 from datetime import datetime
 import time
+import pydotplus
 
 def getKeywords():
     with open("keywords.txt","r") as keywords:
@@ -38,13 +39,14 @@ def convertDate(text):
     
 class Case:
 
-    def __init__(self, args, outcome,attacks,attackedby,origtext,date):
+    def __init__(self, args, outcome,attacks,attackedby,origtext,date,label):
         self.args = args
         self.outcome = outcome
         self.attacks = attacks
         self.attackedby = attackedby
         self.origtext = origtext
         self.date = date
+        self.label = label
               
         
 def buildCasebase(wordlist):
@@ -52,7 +54,7 @@ def buildCasebase(wordlist):
         data = json.load(datafile) 
     casebase = []
     factor = getFactor()
-    defaultcase = Case([],'not %s' % factor,[],[],'DEFAULT',datetime(1900, 1, 1, 0, 0))
+    defaultcase = Case([],'not %s' % factor,[],[],'DEFAULT',datetime(1900, 1, 1, 0, 0),0)
     casebase.append(defaultcase)
     for datum in data:
         date = datum["date"][0].strip()
@@ -71,7 +73,7 @@ def buildCasebase(wordlist):
             args.append(proposal)
             args.append(constraints)
             args = [item for sublist in args for item in sublist]
-            case = Case(args,outcome,[],[],origtext,date)
+            case = Case(args,outcome,[],[],origtext,date,0)
             casebase.append(case)
     return casebase
   
@@ -86,7 +88,7 @@ def getNewCase(wordlist):
             constraints.append(line.strip())
         args.update(constraints)
         
-    newcase = Case(args,"Outcome Unknown",[],[],'NEWCASE: ' + proposal,datetime(1900, 1, 1, 0, 0))
+    newcase = Case(args,"Outcome Unknown",[],[],'NEWCASE: ' + proposal,datetime(1900, 1, 1, 0, 0),0)
     return newcase
 
 '''count = 0
@@ -264,8 +266,12 @@ def drawExplanation(trees):
     for case in sortedtreecaseset:
         print(case.label)
         print(case.origtext)
+        print("")
         print("Indentified factors:")
+        print("")
         print("\n".join(case.args))
+        print("")
+        print("Outcome:")
         print(case.outcome)
         print("")
     # ok, we are set, let's save our graph into a file

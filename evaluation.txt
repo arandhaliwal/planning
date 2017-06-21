@@ -114,11 +114,11 @@ F1 = 0.740
 Very little difference between using whole casebase and only using previous cases each time
 
 Local accuracy rates (measured for every 59 out of 294 cases):
-1. 78%
-2. 78%
-3. 73%
-4. 84%
-5. 76%
+1. 66%
+2. 64%
+3. 92%
+4. 86% 
+5. 73%
 
 No clear pattern as before, possible that positions of cases affects this
 
@@ -179,8 +179,8 @@ Accuracy = 87% - better than AACBR
 P = 127
 N = 167
 tp = 108
-fp = 20
-tn = 147
+fp = 19
+tn = 148
 fn = 19
 
 Precision (PPV) = 0.844
@@ -202,24 +202,9 @@ accuracy 88%
 Temporally ordered testing, only using previous cases as casebase:
 
 k = 6
-number of cases = 288 (first few cases must have previous CB entries to draw from)
+number of cases = 294 
 
-Accuracy = 83%
 
-tp = 97
-fp = 18
-tn = 143
-fn = 30
-
-not much difference again
-
-Local success rates (taken for every 48 out of 288 cases):
-1. 79%
-2. 87%
-3. 83%
-4. 87%
-5. 87%
-6. 87%
 
 Perhaps some pattern here - weaker at the start?
 

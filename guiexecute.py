@@ -8,6 +8,7 @@ casebase = buildCasebase(wordlist)
 
 newcase = getNewCase(wordlist)
 
+
 print("Prediction:")
 prediction = computePrediction(newcase,casebase)
 print(prediction)

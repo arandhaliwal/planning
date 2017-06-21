@@ -104,10 +104,20 @@ def computePrediction(newcase,casebase,n):
     similarcasebase = sorted(casebase, key=lambda x: x.similarity)
     similarcasebase.reverse()
     similarcases = similarcasebase[:n]
-    '''for c in similarcases:
+    print("SIMILAR CASES:")
+    print("")
+    for c in similarcases:
         print(c.origtext)
-        print("outcome:" + c.outcome)
-        print(c.similarity)'''
+        print("")
+        print("Indentified factors:")
+        print("")
+        print("\n".join(c.args))
+        print("")
+        print(c.outcome)
+        print("")
+        print("Similarity:")
+        print(c.similarity)
+        print("")
     nots = [case for case in similarcases if case.outcome == 'not %s' % factor]
     if len(nots) >= (len(similarcases)/2):
         return 'not %s' % factor

@@ -62,6 +62,9 @@ def buildCasebase(wordlist):
         outcome = datum["decision"][0].strip()
         if (outcome == 'Application Approved' or outcome == 'Application Refused'):
             case = Case(args,outcome,[],[],origtext,0,date)
+            for othercase in casebase:
+                if case.args == othercase.args and case.outcome != othercase.outcome:
+                    casebase.remove(othercase)
             casebase.append(case)
     return casebase
   
@@ -88,18 +91,36 @@ for case in casebase:
 def similarity(list1,list2):
     inter = set(list1).intersection(set(list2))
     union = set(list1).union(set(list2))
-    return len(inter)/len(union)
+    if len(union) == 0:
+        return 1
+    else:
+        return len(inter)/len(union)
        
 def computePrediction(newcase,casebase,n):
     for case in casebase:
         case.similarity = similarity(newcase.args,case.args)
     similarcasebase = sorted(casebase, key=lambda x: x.similarity)
-    similarcasebase.reverse()
+    similarcasebase.reverse()   
     similarcases = similarcasebase[:n]
-    '''for c in similarcases:
+    print("SIMILAR CASES:")
+    print("")
+    for c in similarcases:
         print(c.origtext)
+        print("")
+        print("Indentified factors:")
+        print("")
+        print("\n".join(c.args))
+        print("")
         print(c.outcome)
-        print(c.similarity)'''
+        print("")
+        print("Similarity:")
+        print(c.similarity)
+        print("")
+    print("NEWCASE:")
+    print(newcase.origtext)
+    print("")
+    print("\n".join(newcase.args))
+    print("")
     approvals = [case for case in similarcases if case.outcome == "Application Approved"]
     if len(approvals) >= (len(similarcases)/2):
         return "Application Approved"
