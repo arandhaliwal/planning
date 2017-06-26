@@ -274,6 +274,4 @@ def drawExplanation(trees):
         print("Outcome:")
         print(case.outcome)
         print("")
-    # ok, we are set, let's save our graph into a file
     graph.write_png('tree.png')
-    os.system("tree.png")
